@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Blog | Suraj Pandey</title>
+
+    <meta name="description"
+        content="Suraj Pandey's technical blog covering AWS, Cloud Computing, DevOps, Linux, Networking, Cybersecurity and IT.">
+
+    <link rel="stylesheet" href="blog.css">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar">
+        <div class="container nav-container">
+
+            <a href="index.html" class="logo">
+                Suraj<span>.</span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="portfolio.html">Portfolio</a>
+                <a href="services.html">Services</a>
+                <a href="blog.html" class="active">Blog</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+                ☰
+            </button>
+
+        </div>
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="blog-hero">
+
+        <div class="container">
+
+            <div class="hero-content">
+
+                <span class="eyebrow">
+                    TECHNICAL BLOG
+                </span>
+
+                <h1>
+                    Learn. Build. <span>Share.</span>
+                </h1>
+
+                <p>
+                    Practical articles about AWS, Cloud Computing, DevOps,
+                    Linux, Networking, Cybersecurity and modern IT technologies.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= BLOG CONTENT ================= -->
+
+    <main class="container blog-container">
+
+        <!-- SEARCH -->
+
+        <div class="blog-toolbar">
+
+            <div class="search-box">
+                <input
+                    type="search"
+                    id="searchInput"
+                    placeholder="Search articles..."
+                    aria-label="Search articles"
+                >
+            </div>
+
+        </div>
+
+
+        <!-- CATEGORIES -->
+
+        <div class="categories" id="categories">
+
+            <button class="category-btn active" data-category="all">
+                All
+            </button>
+
+            <button class="category-btn" data-category="aws">
+                AWS
+            </button>
+
+            <button class="category-btn" data-category="cloud">
+                Cloud
+            </button>
+
+            <button class="category-btn" data-category="devops">
+                DevOps
+            </button>
+
+            <button class="category-btn" data-category="linux">
+                Linux
+            </button>
+
+            <button class="category-btn" data-category="networking">
+                Networking
+            </button>
+
+            <button class="category-btn" data-category="cybersecurity">
+                Cybersecurity
+            </button>
+
+        </div>
+
+
+        <!-- ================= FEATURED ARTICLE ================= -->
+
+        <section class="featured-section">
+
+            <div class="section-heading">
+                <span>FEATURED</span>
+                <h2>Featured Article</h2>
+            </div>
+
+
+            <article
+                class="featured-card blog-card"
+                data-category="aws"
+                data-title="Building a Serverless URL Shortener with AWS"
+            >
+
+                <div class="featured-content">
+
+                    <div class="article-meta">
+
+                        <span class="tag">
+                            AWS
+                        </span>
+
+                        <span>
+                            8 Aug 2026
+                        </span>
+
+                        <span>
+                            8 min read
+                        </span>
+
+                    </div>
+
+
+                    <h3>
+                        Building a Serverless URL Shortener with AWS Lambda,
+                        API Gateway and DynamoDB
+                    </h3>
+
+
+                    <p>
+                        Learn how I built and deployed a production-style
+                        serverless URL shortener using AWS Lambda,
+                        Amazon API Gateway, DynamoDB and AWS SAM.
+                    </p>
+
+
+                    <a
+                        href="posts/aws-lambda.html"
+                        class="read-more"
+                    >
+                        Read Article →
+                    </a>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- ================= ALL ARTICLES ================= -->
+
+        <section class="articles-section">
+
+            <div class="section-heading">
+
+                <span>ARTICLES</span>
+
+                <h2>
+                    Latest Articles
+                </h2>
+
+            </div>
+
+
+            <div class="articles-grid" id="articlesGrid">
+
+
+                <!-- ARTICLE 1 -->
+
+                <article
+                    class="article-card blog-card"
+                    data-category="aws"
+                    data-title="AWS Lambda Explained"
+                >
+
+                    <div class="article-image aws-image">
+                        AWS
+                    </div>
+
+                    <div class="article-content">
+
+                        <div class="article-meta">
+
+                            <span class="tag">
+                                AWS
+                            </span>
+
+                            <span>
+                                6 min read
+                            </span>
+
+                        </div>
+
+
+                        <h3>
+                            AWS Lambda Explained for Beginners
+                        </h3>
+
+
+                        <p>
+                            Understand AWS Lambda, serverless computing,
+                            functions, triggers, execution and real-world
+                            use cases.
+                        </p>
+
+
+                        <a
+                            href="posts/aws-lambda.html"
+                            class="read-more"
+                        >
+                            Read Article →
+                        </a>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- ARTICLE 2 -->
+
+                <article
+                    class="article-card blog-card"
+                    data-category="cloud"
+                    data-title="Cloud Computing Basics"
+                >
+
+                    <div class="article-image cloud-image">
+                        CLOUD
+                    </div>
+
+                    <div class="article-content">
+
+                        <div class="article-meta">
+
+                            <span class="tag">
+                                Cloud
+                            </span>
+
+                            <span>
+                                7 min read
+                            </span>
+
+                        </div>
+
+
+                        <h3>
+                            Cloud Computing: Complete Beginner's Guide
+                        </h3>
+
+
+                        <p>
+                            Learn the fundamentals of cloud computing,
+                            IaaS, PaaS, SaaS, regions, availability zones
+                            and scalability.
+                        </p>
+
+
+                        <a href="#" class="read-more">
+                            Read Article →
+                        </a>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- ARTICLE 3 -->
+
+                <article
+                    class="article-card blog-card"
+                    data-category="devops"
+                    data-title="DevOps Roadmap"
+                >
+
+                    <div class="article-image devops-image">
+                        DEVOPS
+                    </div>
+
+                    <div class="article-content">
+
+                        <div class="article-meta">
+
+                            <span class="tag">
+                                DevOps
+                            </span>
+
+                            <span>
+                                8 min read
+                            </span>
+
+                        </div>
+
+
+                        <h3>
+                            DevOps Roadmap for IT Beginners
+                        </h3>
+
+
+                        <p>
+                            A practical roadmap covering Linux, Git,
+                            Docker, Kubernetes, CI/CD and cloud technologies.
+                        </p>
+
+
+                        <a href="#" class="read-more">
+                            Read Article →
+                        </a>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- ARTICLE 4 -->
+
+                <article
+                    class="article-card blog-card"
+                    data-category="linux"
+                    data-title="Linux Basics"
+                >
+
+                    <div class="article-image linux-image">
+                        LINUX
+                    </div>
+
+                    <div class="article-content">
+
+                        <div class="article-meta">
+
+                            <span class="tag">
+                                Linux
+                            </span>
+
+                            <span>
+                                5 min read
+                            </span>
+
+                        </div>
+
+
+                        <h3>
+                            Linux Basics Every Cloud Engineer Should Know
+                        </h3>
+
+
+                        <p>
+                            Learn essential Linux commands, file systems,
+                            permissions, processes and networking basics.
+                        </p>
+
+
+                        <a href="#" class="read-more">
+                            Read Article →
+                        </a>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- ARTICLE 5 -->
+
+                <article
+                    class="article-card blog-card"
+                    data-category="networking"
+                    data-title="Networking Fundamentals"
+                >
+
+                    <div class="article-image networking-image">
+                        NETWORK
+                    </div>
+
+                    <div class="article-content">
+
+                        <div class="article-meta">
+
+                            <span class="tag">
+                                Networking
+                            </span>
+
+                            <span>
+                                7 min read
+                            </span>
+
+                        </div>
+
+
+                        <h3>
+                            Networking Fundamentals for Cloud Engineers
+                        </h3>
+
+
+                        <p>
+                            Understand IP addresses, DNS, TCP/IP,
+                            ports, routing, subnets and security groups.
+                        </p>
+
+
+                        <a href="#" class="read-more">
+                            Read Article →
+                        </a>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- ARTICLE 6 -->
+
+                <article
+                    class="article-card blog-card"
+                    data-category="cybersecurity"
+                    data-title="Cybersecurity Fundamentals"
+                >
+
+                    <div class="article-image security-image">
+                        SECURITY
+                    </div>
+
+                    <div class="article-content">
+
+                        <div class="article-meta">
+
+                            <span class="tag">
+                                Cybersecurity
+                            </span>
+
+                            <span>
+                                6 min read
+                            </span>
+
+                        </div>
+
+
+                        <h3>
+                            Cybersecurity Fundamentals Every IT Beginner
+                            Should Learn
+                        </h3>
+
+
+                        <p>
+                            Explore CIA triad, authentication,
+                            authorization, threats, vulnerabilities,
+                            IDS, SIEM and security best practices.
+                        </p>
+
+
+                        <a href="#" class="read-more">
+                            Read Article →
+                        </a>
+
+                    </div>
+
+                </article>
+
+
+            </div>
+
+
+            <!-- NO RESULTS -->
+
+            <div
+                class="no-results"
+                id="noResults"
+                style="display:none;"
+            >
+
+                <h3>
+                    No articles found
+                </h3>
+
+                <p>
+                    Try another search or category.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= NEWSLETTER ================= -->
+
+    <section class="newsletter">
+
+        <div class="container">
+
+            <div class="newsletter-content">
+
+                <span class="eyebrow">
+                    STAY UPDATED
+                </span>
+
+                <h2>
+                    Learn something new every week.
+                </h2>
+
+                <p>
+                    Follow my journey through Cloud, AWS, DevOps,
+                    Networking and Cybersecurity.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="container">
+
+            <div class="footer-content">
+
+                <div>
+
+                    <h3>
+                        Suraj<span>.</span>
+                    </h3>
+
+                    <p>
+                        Cloud & IT Enthusiast building practical
+                        technology projects.
+                    </p>
+
+                </div>
+
+
+                <div class="footer-links">
+
+                    <a href="index.html">
+                        Home
+                    </a>
+
+                    <a href="portfolio.html">
+                        Portfolio
+                    </a>
+
+                    <a href="blog.html">
+                        Blog
+                    </a>
+
+                    <a href="contact.html">
+                        Contact
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-bottom">
+
+                <p>
+                    © 2026 Suraj Pandey. All rights reserved.
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <script src="blog.js"></script>
+
+</body>
+</html>

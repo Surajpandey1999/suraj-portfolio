@@ -1,1670 +1,1140 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Technical Blog | Suraj Pandey</title>
+    <title>AI & Cloud Engineering Blog | Suraj Pandey</title>
 
     <meta name="description"
-          content="Practical articles about technology, networking, cybersecurity, AWS, DevOps, Linux and modern IT concepts by Suraj Pandey.">
+          content="Suraj Pandey's technical blog covering Large Language Models, Generative AI, Deep Learning, Agentic AI, AWS, Cloud Computing, DevOps, Linux, Networking and Cybersecurity.">
 
     <meta name="author" content="Suraj Pandey">
 
-    <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
-          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
-    <!-- Icons -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <style>
-        /* =========================================================
-           RESET
-        ========================================================= */
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* =====================================================
+           ROOT — token system
+           Category accents double as the "signature" color logic:
+           every article is tagged, and its tag color drives the
+           card's glow, border and icon — the taxonomy IS the design.
+        ====================================================== */
+
+        :root {
+
+            --bg: #05060f;
+            --bg-soft: #080a18;
+            --card: rgba(10, 12, 24, 0.72);
+
+            --primary: #7c5cff;      /* LLM violet — the blog's core voice */
+            --cyan: #22d3ee;         /* Networking */
+            --blue: #38bdf8;         /* Cloud */
+            --green: #22c55e;        /* DevOps */
+            --yellow: #eab308;       /* Linux */
+            --red: #ef4444;          /* Security */
+            --aws-orange: #f59e0b;   /* AWS */
+            --magenta: #f472b6;      /* GenAI */
+            --emerald: #34d399;      /* Deep Learning */
+            --amber: #fbbf24;        /* Agentic AI */
+
+            --text: #f5f6fb;
+            --muted: #94a0b8;
+            --muted-dark: #5c6684;
+
+            --border: rgba(148, 163, 184, 0.14);
+
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            --glow: 0 0 35px rgba(124, 92, 255, 0.18);
+
         }
 
-        html {
-            scroll-behavior: smooth;
+        /* per-category accent, set via attribute selector so the
+           taxonomy drives the palette without any JS */
+        [data-category="networking"] { --accent: var(--cyan); }
+        [data-category="aws"]        { --accent: var(--aws-orange); }
+        [data-category="cloud"]      { --accent: var(--blue); }
+        [data-category="devops"]     { --accent: var(--green); }
+        [data-category="linux"]      { --accent: var(--yellow); }
+        [data-category="security"]   { --accent: var(--red); }
+        [data-category="llm"]        { --accent: var(--primary); }
+        [data-category="genai"]      { --accent: var(--magenta); }
+        [data-category="dl"]         { --accent: var(--emerald); }
+        [data-category="agentic"]    { --accent: var(--amber); }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+            }
         }
 
         body {
-            font-family: "Inter", sans-serif;
-            background: #f7f9fc;
-            color: #172033;
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--bg);
+            color: var(--text);
             line-height: 1.7;
+            overflow-x: hidden;
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.15;
+            background-image:
+                linear-gradient(rgba(124, 92, 255, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(124, 92, 255, 0.08) 1px, transparent 1px);
+            background-size: 55px 55px;
+            mask-image: linear-gradient(to bottom, black, transparent 85%);
         }
 
-        img {
-            max-width: 100%;
-            display: block;
-        }
+        a { color: inherit; text-decoration: none; }
+        button, input { font: inherit; }
 
-        button,
-        input {
-            font-family: inherit;
-        }
+        .container { width: min(1180px, 92%); margin: auto; }
 
-        .container {
-            width: min(1180px, 92%);
-            margin: auto;
-        }
+        code, .mono { font-family: "JetBrains Mono", monospace; }
 
-        /* =========================================================
+        /* =====================================================
            NAVBAR
-        ========================================================= */
+        ====================================================== */
 
         .navbar {
             position: sticky;
             top: 0;
             z-index: 1000;
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid #e7ebf2;
+            background: rgba(5, 6, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
         }
 
-        .nav-container {
-            min-height: 74px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .nav-container { min-height: 74px; display: flex; align-items: center; justify-content: space-between; }
+
+        .logo { font-family: "Space Grotesk", sans-serif; font-size: 1.55rem; font-weight: 800; letter-spacing: -0.8px; }
+        .logo span { color: var(--primary); }
+
+        .nav-links { display: flex; align-items: center; gap: 30px; list-style: none; }
+
+        .nav-links a { position: relative; color: var(--muted); font-size: 0.9rem; font-weight: 600; transition: 0.25s ease; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        .nav-links a::after {
+            content: ""; position: absolute; left: 0; bottom: -9px; width: 0; height: 2px;
+            border-radius: 10px;
+            background: linear-gradient(90deg, var(--primary), var(--magenta));
+            transition: 0.3s ease;
+        }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+        .menu-toggle { display: none; border: 0; background: transparent; color: white; font-size: 1.4rem; cursor: pointer; }
+
+        /* =====================================================
+           HERO + NEURAL CANVAS (signature element)
+        ====================================================== */
+
+        .hero { position: relative; padding: 120px 0 100px; overflow: hidden; }
+
+        #heroCanvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.55;
         }
 
-        .logo {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 1.45rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
+        .hero-content { max-width: 900px; }
+
+        .ai-badge {
+            display: inline-flex; align-items: center; gap: 9px;
+            padding: 8px 13px; margin-bottom: 25px;
+            border: 1px solid rgba(124, 92, 255, 0.3);
+            border-radius: 999px;
+            background: rgba(124, 92, 255, 0.08);
+            color: var(--primary);
+            font-family: "JetBrains Mono", monospace;
+            font-size: 0.7rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+            box-shadow: var(--glow);
         }
 
-        .logo span {
-            color: #2563eb;
+        .pulse {
+            width: 7px; height: 7px; border-radius: 50%; background: #22c55e;
+            box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.1);
+            animation: pulse 1.8s infinite;
         }
 
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            font-size: 0.92rem;
-            font-weight: 600;
-            color: #4b5563;
-            transition: 0.25s ease;
-        }
-
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: #2563eb;
-        }
-
-        .menu-toggle {
-            display: none;
-            border: 0;
-            background: transparent;
-            font-size: 1.4rem;
-            cursor: pointer;
-        }
-
-        /* =========================================================
-           HERO
-        ========================================================= */
-
-        .hero {
-            padding: 90px 0 70px;
-            background:
-                radial-gradient(circle at 15% 20%, rgba(37, 99, 235, 0.08), transparent 30%),
-                radial-gradient(circle at 85% 30%, rgba(14, 165, 233, 0.07), transparent 30%);
-        }
-
-        .hero-content {
-            max-width: 850px;
-        }
-
-        .eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: #2563eb;
-            font-size: 0.78rem;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            margin-bottom: 18px;
-        }
-
-        .eyebrow::before {
-            content: "";
-            width: 28px;
-            height: 2px;
-            background: #2563eb;
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.35); }
+            70% { box-shadow: 0 0 0 9px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
         }
 
         .hero h1 {
             font-family: "Space Grotesk", sans-serif;
-            font-size: clamp(2.5rem, 6vw, 4.8rem);
-            line-height: 1.05;
-            letter-spacing: -2px;
-            margin-bottom: 24px;
+            font-size: clamp(3rem, 8vw, 6.4rem);
+            line-height: 0.98; letter-spacing: -4px; margin-bottom: 28px;
         }
 
-        .hero h1 span {
-            color: #2563eb;
+        .gradient-text {
+            background: linear-gradient(90deg, #7c5cff, #22d3ee, #f472b6, #7c5cff);
+            background-size: 300% auto;
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            animation: gradientMove 7s linear infinite;
         }
 
-        .hero p {
-            max-width: 720px;
-            color: #64748b;
-            font-size: 1.08rem;
+        @keyframes gradientMove { to { background-position: 300% center; } }
+
+        .hero p { max-width: 760px; color: var(--muted); font-size: 1.08rem; }
+
+        .hero-tech { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+
+        .tech-chip {
+            padding: 7px 12px; border: 1px solid var(--border); border-radius: 8px;
+            background: rgba(15, 18, 36, 0.65); color: #cbd5e1;
+            font-size: 0.75rem; font-weight: 700;
         }
 
-        /* =========================================================
+        /* =====================================================
+           SECTION COMMON
+        ====================================================== */
+
+        .section { padding-bottom: 95px; }
+
+        .section-label {
+            color: var(--primary); font-family: "JetBrains Mono", monospace;
+            font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+        }
+
+        .section-title { margin-top: 6px; font-family: "Space Grotesk", sans-serif; font-size: 2.1rem; letter-spacing: -1px; }
+
+        .section-description { max-width: 650px; margin-top: 8px; color: var(--muted); font-size: 0.92rem; }
+
+        .section-header { margin-bottom: 28px; }
+
+        /* =====================================================
            SEARCH + FILTER
-        ========================================================= */
+        ====================================================== */
 
-        .tools {
-            padding-bottom: 55px;
-        }
+        .tools { padding-bottom: 45px; }
 
-        .tools-wrapper {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
+        .tools-wrapper { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
 
-        .search-box {
-            position: relative;
-            flex: 1;
-            min-width: 260px;
-            max-width: 420px;
-        }
+        .search-box { position: relative; width: min(430px, 100%); }
 
-        .search-box i {
-            position: absolute;
-            left: 17px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #94a3b8;
-        }
+        .search-box i { position: absolute; left: 17px; top: 50%; transform: translateY(-50%); color: #64748b; }
 
         .search-box input {
-            width: 100%;
-            height: 48px;
-            padding: 0 18px 0 46px;
-            border: 1px solid #dce2ea;
-            border-radius: 12px;
-            outline: none;
-            background: #fff;
-            color: #172033;
-            transition: 0.25s ease;
+            width: 100%; height: 50px; padding: 0 18px 0 47px;
+            border: 1px solid var(--border); border-radius: 12px; outline: none;
+            background: rgba(15, 18, 36, 0.8); color: white; transition: 0.25s ease;
         }
 
         .search-box input:focus {
-            border-color: #2563eb;
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+            border-color: rgba(124, 92, 255, 0.65);
+            box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.1);
         }
 
-        .filters {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
+        .search-box input::placeholder { color: #64748b; }
+
+        .filters { display: flex; flex-wrap: wrap; gap: 8px; }
 
         .filter-btn {
-            border: 1px solid #dce2ea;
-            background: #fff;
-            color: #475569;
-            padding: 10px 15px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 0.82rem;
-            font-weight: 700;
-            transition: 0.25s ease;
+            padding: 9px 14px; border: 1px solid var(--border); border-radius: 9px;
+            background: rgba(15, 18, 36, 0.8); color: var(--muted); cursor: pointer;
+            font-size: 0.76rem; font-weight: 700; transition: 0.25s ease;
         }
 
-        .filter-btn:hover,
+        .filter-btn:hover { color: white; border-color: rgba(124, 92, 255, 0.45); transform: translateY(-2px); }
+
         .filter-btn.active {
-            background: #2563eb;
-            border-color: #2563eb;
-            color: #fff;
+            background: linear-gradient(135deg, #7c5cff, #5b3df0);
+            border-color: transparent; color: #fff;
+            box-shadow: 0 8px 25px rgba(124, 92, 255, 0.35);
         }
 
-        /* =========================================================
-           FEATURED ARTICLE
-        ========================================================= */
-
-        .section-header {
-            margin-bottom: 25px;
-        }
-
-        .section-label {
-            color: #2563eb;
-            font-size: 0.75rem;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
-
-        .section-title {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 2rem;
-            margin-top: 5px;
-        }
-
-        .featured {
-            padding-bottom: 80px;
-        }
+        /* =====================================================
+           FEATURED
+        ====================================================== */
 
         .featured-card {
-            display: grid;
-            grid-template-columns: 1.1fr 1fr;
-            min-height: 390px;
-            overflow: hidden;
-            border-radius: 24px;
-            background: #111827;
-            color: #fff;
-            box-shadow: 0 18px 50px rgba(15, 23, 42, 0.14);
+            position: relative; display: grid; grid-template-columns: 0.95fr 1.2fr;
+            min-height: 410px; overflow: hidden;
+            border: 1px solid var(--border); border-radius: 25px;
+            background: linear-gradient(135deg, rgba(15, 18, 36, 0.96), rgba(9, 10, 24, 0.9));
+            box-shadow: var(--shadow);
+            transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+            transform-style: preserve-3d;
+        }
+
+        .featured-card:hover {
+            border-color: rgba(124, 92, 255, 0.4);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45), 0 0 60px rgba(124, 92, 255, 0.1);
         }
 
         .featured-visual {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 45px;
-            overflow: hidden;
+            position: relative; min-height: 350px;
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
             background:
-                radial-gradient(circle at 30% 25%, rgba(59, 130, 246, 0.38), transparent 28%),
-                radial-gradient(circle at 80% 70%, rgba(14, 165, 233, 0.2), transparent 30%),
-                #0f172a;
+                radial-gradient(circle at 25% 25%, rgba(124, 92, 255, 0.32), transparent 30%),
+                radial-gradient(circle at 75% 75%, rgba(244, 114, 182, 0.28), transparent 30%),
+                #070720;
         }
 
-        .featured-visual::before {
-            content: "</>";
-            position: absolute;
-            font-family: monospace;
-            font-size: 10rem;
-            font-weight: 800;
-            color: rgba(255, 255, 255, 0.035);
+        #featuredCanvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+        .ai-core {
+            position: relative; z-index: 2; width: 110px; height: 110px;
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 28px;
+            background: rgba(255, 255, 255, 0.045); backdrop-filter: blur(12px);
+            color: var(--primary); font-size: 2.7rem;
+            box-shadow: 0 0 50px rgba(124, 92, 255, 0.25);
+            animation: coreFloat 4s ease-in-out infinite;
         }
 
-        .visual-icon {
-            position: relative;
-            width: 120px;
-            height: 120px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: #60a5fa;
-            background: rgba(255, 255, 255, 0.04);
-        }
+        @keyframes coreFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        .featured-content {
-            padding: 50px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+        .featured-content { display: flex; flex-direction: column; justify-content: center; padding: 50px; }
 
-        .meta {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 17px;
-            font-size: 0.78rem;
-            color: #64748b;
-            font-weight: 600;
-        }
-
-        .featured-content .meta {
-            color: #94a3b8;
-        }
+        .meta { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; color: #64748b; font-size: 0.76rem; font-weight: 600; }
 
         .tag {
-            display: inline-flex;
-            padding: 5px 9px;
-            border-radius: 7px;
-            background: #eff6ff;
-            color: #2563eb;
-            font-size: 0.7rem;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .featured-content .tag {
-            background: rgba(59, 130, 246, 0.14);
-            color: #60a5fa;
+            padding: 5px 9px; border: 1px solid var(--accent, var(--primary));
+            border-radius: 7px; background: color-mix(in srgb, var(--accent, var(--primary)) 14%, transparent);
+            color: var(--accent, var(--primary));
+            font-family: "JetBrains Mono", monospace;
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase;
         }
 
         .featured-content h2 {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: clamp(1.8rem, 3vw, 2.6rem);
-            line-height: 1.2;
-            margin-bottom: 16px;
+            font-family: "Space Grotesk", sans-serif; font-size: clamp(1.8rem, 4vw, 2.8rem);
+            line-height: 1.15; letter-spacing: -1.5px; margin-bottom: 17px;
         }
 
-        .featured-content p {
-            color: #aab5c5;
-            margin-bottom: 25px;
-        }
+        .featured-content p { color: var(--muted); max-width: 650px; margin-bottom: 25px; }
 
-        .read-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            width: fit-content;
-            font-size: 0.9rem;
-            font-weight: 800;
-            color: #2563eb;
-            transition: 0.25s ease;
-        }
+        .read-link { display: inline-flex; align-items: center; gap: 8px; width: fit-content; color: var(--primary); font-size: 0.86rem; font-weight: 800; transition: 0.25s ease; }
+        .read-link:hover { gap: 14px; color: #a996ff; }
 
-        .featured-content .read-link {
-            color: #60a5fa;
-        }
-
-        .read-link:hover {
-            gap: 13px;
-        }
-
-        /* =========================================================
+        /* =====================================================
            ARTICLE GRID
-        ========================================================= */
+        ====================================================== */
 
-        .articles {
-            padding-bottom: 90px;
-        }
-
-        .article-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
+        .article-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 
         .article-card {
-            display: flex;
-            flex-direction: column;
-            min-height: 360px;
-            background: #fff;
-            border: 1px solid #e6eaf0;
-            border-radius: 18px;
-            overflow: hidden;
-            transition: 0.3s ease;
+            position: relative; display: flex; flex-direction: column; min-height: 370px;
+            overflow: hidden; border: 1px solid var(--border); border-radius: 18px;
+            background: linear-gradient(145deg, rgba(15, 18, 36, 0.85), rgba(8, 9, 22, 0.85));
+            transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+            will-change: transform;
         }
 
-        .article-card:hover {
-            transform: translateY(-6px);
-            border-color: #cbd5e1;
-            box-shadow: 0 16px 35px rgba(15, 23, 42, 0.08);
+        .article-card::before {
+            content: ""; position: absolute; top: -100px; right: -100px; width: 180px; height: 180px;
+            border-radius: 50%;
+            background: color-mix(in srgb, var(--accent, var(--primary)) 22%, transparent);
+            filter: blur(35px); transition: 0.4s ease;
         }
+
+        .article-card:hover { border-color: color-mix(in srgb, var(--accent, var(--primary)) 55%, transparent); }
+        .article-card:hover::before { transform: scale(1.5); }
 
         .article-top {
-            height: 135px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #eff6ff, #f8fafc);
-            color: #2563eb;
-            font-size: 2.8rem;
+            position: relative; height: 150px; display: flex; align-items: center; justify-content: center;
+            border-bottom: 1px solid var(--border);
+            background: radial-gradient(circle at center, color-mix(in srgb, var(--accent, var(--primary)) 20%, transparent), transparent 60%);
+            color: var(--accent, var(--primary)); font-size: 2.7rem;
         }
 
-        .article-body {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            padding: 25px;
+        .article-body { display: flex; flex: 1; flex-direction: column; padding: 24px; }
+
+        .article-body h3 { font-family: "Space Grotesk", sans-serif; font-size: 1.15rem; line-height: 1.35; margin-bottom: 12px; }
+
+        .article-body p { color: var(--muted); font-size: 0.87rem; margin-bottom: 20px; }
+
+        .article-footer { margin-top: auto; }
+
+        .article-footer .read-link { color: var(--accent, var(--primary)); }
+        .article-footer .read-link:hover { color: #fff; }
+
+        /* =====================================================
+           AI TOPICS STRIP
+        ====================================================== */
+
+        .ai-section {
+            padding: 90px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+            background: linear-gradient(180deg, rgba(124, 92, 255, 0.03), rgba(244, 114, 182, 0.035));
         }
 
-        .article-body .meta {
-            margin-bottom: 13px;
+        .ai-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 30px; }
+
+        .ai-card { padding: 26px; border: 1px solid var(--border); border-radius: 18px; background: rgba(8, 9, 22, 0.65); transition: 0.35s ease; }
+
+        .ai-card:hover {
+            transform: translateY(-5px);
+            border-color: color-mix(in srgb, var(--accent, var(--primary)) 50%, transparent);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
         }
 
-        .article-body h3 {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 1.25rem;
-            line-height: 1.35;
-            margin-bottom: 12px;
+        .ai-icon {
+            width: 46px; height: 46px; display: flex; align-items: center; justify-content: center;
+            margin-bottom: 16px; border-radius: 13px;
+            background: color-mix(in srgb, var(--accent, var(--primary)) 18%, transparent);
+            color: var(--accent, var(--primary)); font-size: 1.2rem;
         }
 
-        .article-body p {
-            color: #64748b;
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-        }
+        .ai-card h3 { font-family: "Space Grotesk", sans-serif; margin-bottom: 8px; font-size: 1.05rem; }
+        .ai-card p { color: var(--muted); font-size: 0.83rem; }
 
-        .article-footer {
-            margin-top: auto;
-        }
+        /* =====================================================
+           EMPTY STATE
+        ====================================================== */
 
-        /* =========================================================
-           EMPTY SEARCH STATE
-        ========================================================= */
+        .empty-state { display: none; padding: 70px 20px; text-align: center; border: 1px dashed #334155; border-radius: 18px; color: var(--muted); }
+        .empty-state i { display: block; margin-bottom: 12px; color: #64748b; font-size: 2rem; }
 
-        .empty-state {
-            display: none;
-            text-align: center;
-            padding: 60px 20px;
-            color: #64748b;
-        }
-
-        .empty-state i {
-            font-size: 2rem;
-            margin-bottom: 12px;
-            color: #94a3b8;
-        }
-
-        /* =========================================================
+        /* =====================================================
            NEWSLETTER
-        ========================================================= */
+        ====================================================== */
 
-        .newsletter {
-            padding: 80px 0;
-            background: #eef4ff;
-        }
+        .newsletter { padding: 90px 0; }
 
         .newsletter-box {
-            text-align: center;
-            max-width: 720px;
-            margin: auto;
+            position: relative; overflow: hidden; max-width: 850px; margin: auto; padding: 55px 35px; text-align: center;
+            border: 1px solid rgba(124, 92, 255, 0.2); border-radius: 24px;
+            background: linear-gradient(135deg, rgba(124, 92, 255, 0.09), rgba(244, 114, 182, 0.08));
         }
 
-        .newsletter-box h2 {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 2rem;
-            margin-bottom: 12px;
+        .newsletter-box::before {
+            content: ""; position: absolute; width: 250px; height: 250px; left: 50%; top: 50%;
+            transform: translate(-50%, -50%); border-radius: 50%;
+            background: rgba(124, 92, 255, 0.1); filter: blur(80px);
         }
 
-        .newsletter-box p {
-            color: #64748b;
-        }
+        .newsletter-box > * { position: relative; }
 
-        /* =========================================================
+        .newsletter-box h2 { font-family: "Space Grotesk", sans-serif; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; margin-bottom: 12px; }
+        .newsletter-box p { color: var(--muted); max-width: 650px; margin: auto; }
+
+        /* =====================================================
            FOOTER
-        ========================================================= */
+        ====================================================== */
 
-        footer {
-            background: #0f172a;
-            color: #fff;
-            padding: 55px 0 25px;
-        }
+        footer { padding: 60px 0 25px; background: #030411; border-top: 1px solid var(--border); }
 
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1.4fr 1fr 1fr;
-            gap: 50px;
-            padding-bottom: 40px;
-        }
+        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 50px; padding-bottom: 40px; }
 
-        .footer-brand h2 {
-            font-family: "Space Grotesk", sans-serif;
-            margin-bottom: 12px;
-        }
+        .footer-brand h2 { font-family: "Space Grotesk", sans-serif; margin-bottom: 12px; }
+        .footer-brand h2 span { color: var(--primary); }
+        .footer-brand p { max-width: 450px; color: var(--muted-dark); font-size: 0.88rem; }
 
-        .footer-brand p {
-            max-width: 420px;
-            color: #94a3b8;
-            font-size: 0.9rem;
-        }
+        .footer-column h4 { margin-bottom: 15px; font-size: 0.9rem; }
+        .footer-column a { display: block; margin-bottom: 8px; color: var(--muted-dark); font-size: 0.86rem; transition: 0.2s ease; }
+        .footer-column a:hover { color: var(--primary); }
 
-        .footer-column h4 {
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-        }
+        .copyright { padding-top: 22px; border-top: 1px solid rgba(148, 163, 184, 0.08); text-align: center; color: #475569; font-size: 0.76rem; }
 
-        .footer-column a {
-            display: block;
-            color: #94a3b8;
-            font-size: 0.88rem;
-            margin-bottom: 8px;
-            transition: 0.2s ease;
-        }
+        /* =====================================================
+           SCROLL REVEAL (IntersectionObserver driven)
+        ====================================================== */
 
-        .footer-column a:hover {
-            color: #60a5fa;
-        }
+        .reveal-up { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .reveal-up.is-visible { opacity: 1; transform: translateY(0); }
 
-        .copyright {
-            padding-top: 22px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            text-align: center;
-            color: #64748b;
-            font-size: 0.78rem;
-        }
-
-        /* =========================================================
+        /* =====================================================
            RESPONSIVE
-        ========================================================= */
+        ====================================================== */
 
-        @media (max-width: 900px) {
+        @media (max-width: 1050px) { .ai-grid { grid-template-columns: repeat(2, 1fr); } }
 
-            .nav-links {
-                gap: 18px;
-            }
-
-            .featured-card {
-                grid-template-columns: 1fr;
-            }
-
-            .featured-visual {
-                min-height: 250px;
-            }
-
-            .article-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
-            }
+        @media (max-width: 950px) {
+            .article-grid { grid-template-columns: repeat(2, 1fr); }
+            .featured-card { grid-template-columns: 1fr; }
+            .featured-visual { min-height: 280px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
         }
 
-        @media (max-width: 650px) {
-
-            .nav-container {
-                min-height: 66px;
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
+        @media (max-width: 700px) {
+            .nav-container { min-height: 66px; }
+            .menu-toggle { display: block; }
             .nav-links {
-                position: absolute;
-                top: 66px;
-                left: 0;
-                right: 0;
-                display: none;
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0;
-                background: #fff;
-                border-bottom: 1px solid #e7ebf2;
-                padding: 10px 4%;
+                position: absolute; top: 66px; left: 0; right: 0; display: none;
+                flex-direction: column; align-items: flex-start; gap: 0; padding: 12px 4%;
+                background: rgba(5, 6, 15, 0.98); border-bottom: 1px solid var(--border);
             }
-
-            .nav-links.show {
-                display: flex;
-            }
-
-            .nav-links li {
-                width: 100%;
-            }
-
-            .nav-links a {
-                display: block;
-                padding: 12px 0;
-            }
-
-            .hero {
-                padding: 65px 0 50px;
-            }
-
-            .hero h1 {
-                letter-spacing: -1.5px;
-            }
-
-            .tools-wrapper {
-                align-items: stretch;
-            }
-
-            .search-box {
-                max-width: none;
-            }
-
-            .filters {
-                width: 100%;
-            }
-
-            .filter-btn {
-                flex: 1;
-            }
-
-            .featured-content {
-                padding: 30px;
-            }
-
-            .article-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
+            .nav-links.show { display: flex; }
+            .nav-links li { width: 100%; }
+            .nav-links a { display: block; padding: 12px 0; }
+            .hero { padding: 80px 0 70px; }
+            .hero h1 { letter-spacing: -2.5px; }
+            .tools-wrapper { align-items: stretch; }
+            .search-box { width: 100%; }
+            .filters { width: 100%; }
+            .filter-btn { flex: 1; }
+            .featured-content { padding: 30px; }
+            .article-grid, .ai-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; gap: 30px; }
         }
+
     </style>
+
 </head>
 
 <body>
 
-<!-- =========================================================
+<!-- =====================================================
      NAVBAR
-========================================================= -->
+====================================================== -->
 
 <header class="navbar">
-
     <div class="container nav-container">
 
-        <a href="../index.html" class="logo">
-            Suraj<span>.</span>
-        </a>
+        <a href="../index.html" class="logo">Suraj<span>.</span></a>
 
-        <button class="menu-toggle"
-                id="menuToggle"
-                aria-label="Open navigation menu">
+        <button class="menu-toggle" id="menuToggle" aria-label="Open navigation menu">
             <i class="fa-solid fa-bars"></i>
         </button>
 
         <ul class="nav-links" id="navLinks">
-
-            <li>
-                <a href="index.html">Home</a>
-            </li>
-
-            <li>
-                <a href="about.html">About</a>
-            </li>
-
-            <li>
-                <a href="portfolio.html">Portfolio</a>
-            </li>
-
-            <li>
-                <a href="services.html">Services</a>
-            </li>
-
-            <li>
-                <a href="blog.html" class="active">Blog</a>
-            </li>
-
-            <li>
-                <a href="contact.html">Contact</a>
-            </li>
-
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../portfolio.html">Portfolio</a></li>
+            <li><a href="../services.html">Services</a></li>
+            <li><a href="blog.html" class="active">Blog</a></li>
+            <li><a href="../contact.html">Contact</a></li>
         </ul>
 
     </div>
-
 </header>
 
-
-<!-- =========================================================
+<!-- =====================================================
      HERO
-========================================================= -->
+====================================================== -->
 
 <section class="hero">
 
+    <canvas id="heroCanvas"></canvas>
+
     <div class="container hero-content">
 
-        <div class="eyebrow">
-            Technical Blog
+        <div class="ai-badge">
+            <span class="pulse"></span>
+            LLM • GENAI • DEEP LEARNING • CLOUD
         </div>
 
-        <h1>
-            Learn.
-            <span>Build.</span>
-            Share.
-        </h1>
+        <h1>Learn. <span class="gradient-text">Build.</span> Automate.</h1>
 
         <p>
-            Practical articles explaining technology in simple language —
-            from networking and cybersecurity to AWS, DevOps, Linux and
-            modern IT concepts.
+            A practical technical blog by Suraj Pandey covering Large Language
+            Models, Generative AI, Deep Learning, Agentic AI, AWS, Cloud
+            Computing, DevOps, Linux, Networking and Cybersecurity.
         </p>
+
+        <div class="hero-tech">
+            <span class="tech-chip">Large Language Models</span>
+            <span class="tech-chip">Generative AI</span>
+            <span class="tech-chip">Deep Learning</span>
+            <span class="tech-chip">Agentic AI</span>
+            <span class="tech-chip">AWS</span>
+            <span class="tech-chip">DevOps</span>
+            <span class="tech-chip">Linux</span>
+            <span class="tech-chip">Networking</span>
+        </div>
 
     </div>
 
 </section>
 
-
-<!-- =========================================================
+<!-- =====================================================
      SEARCH + FILTER
-========================================================= -->
+====================================================== -->
 
 <section class="tools">
-
     <div class="container">
-
         <div class="tools-wrapper">
 
             <div class="search-box">
-
                 <i class="fa-solid fa-magnifying-glass"></i>
-
-                <input
-                    type="search"
-                    id="searchInput"
-                    placeholder="Search articles..."
-                    aria-label="Search articles">
-
+                <input type="search" id="searchInput" placeholder="Search LLM, AWS, Linux..." aria-label="Search articles">
             </div>
 
             <div class="filters">
-
-                <button class="filter-btn active"
-                        data-filter="all">
-                    All
-                </button>
-
-                <button class="filter-btn"
-                        data-filter="networking">
-                    Networking
-                </button>
-
-                <button class="filter-btn"
-                        data-filter="aws">
-                    AWS
-                </button>
-
-                <button class="filter-btn"
-                        data-filter="cloud">
-                    Cloud
-                </button>
-
-                <button class="filter-btn"
-                        data-filter="devops">
-                    DevOps
-                </button>
-
-                <button class="filter-btn"
-                        data-filter="linux">
-                    Linux
-                </button>
-
-                <button class="filter-btn"
-                        data-filter="security">
-                    Security
-                </button>
-
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="llm">LLM</button>
+                <button class="filter-btn" data-filter="genai">GenAI</button>
+                <button class="filter-btn" data-filter="dl">Deep Learning</button>
+                <button class="filter-btn" data-filter="agentic">Agentic AI</button>
+                <button class="filter-btn" data-filter="aws">AWS</button>
+                <button class="filter-btn" data-filter="cloud">Cloud</button>
+                <button class="filter-btn" data-filter="devops">DevOps</button>
+                <button class="filter-btn" data-filter="linux">Linux</button>
+                <button class="filter-btn" data-filter="networking">Networking</button>
+                <button class="filter-btn" data-filter="security">Security</button>
             </div>
 
         </div>
-
     </div>
-
 </section>
 
-
-<!-- =========================================================
+<!-- =====================================================
      FEATURED ARTICLE
-========================================================= -->
+====================================================== -->
 
-<section class="featured">
-
+<section class="section">
     <div class="container">
 
         <div class="section-header">
-
-            <div class="section-label">
-                Featured
-            </div>
-
-            <h2 class="section-title">
-                Featured Article
-            </h2>
-
+            <div class="section-label">Featured</div>
+            <h2 class="section-title">Featured Article</h2>
         </div>
 
-
-        <article class="featured-card">
+        <article class="featured-card reveal-up" data-category="llm">
 
             <div class="featured-visual">
-
-                <div class="visual-icon">
-                    <i class="fa-solid fa-network-wired"></i>
-                </div>
-
+                <canvas id="featuredCanvas"></canvas>
+                <div class="ai-core"><i class="fa-solid fa-brain"></i></div>
             </div>
 
-
             <div class="featured-content">
-
                 <div class="meta">
-
-                    <span class="tag">
-                        Networking
-                    </span>
-
-                    <span>
-                        8 Aug 2026
-                    </span>
-
-                    <span>
-                        •
-                    </span>
-
-                    <span>
-                        10 min read
-                    </span>
-
+                    <span class="tag">LLM</span>
+                    <span>9 Aug 2026</span>
+                    <span>•</span>
+                    <span>11 min read</span>
                 </div>
 
-
-                <h2>
-                    How Does the Internet Actually Work?
-                </h2>
-
+                <h2>Inside a Large Language Model: Tokens to Text</h2>
 
                 <p>
-                    Ever wondered what happens after you type a website
-                    address and press Enter? Explore DNS, IP addresses,
-                    routers, TCP/IP, HTTP, servers and the complete journey
-                    of a web request in simple language.
+                    What actually happens between you pressing Enter and an
+                    LLM replying? Tokenization, embeddings, attention,
+                    next-token prediction — the full journey explained in
+                    plain language, no PhD required.
                 </p>
 
-
-                <a href="posts/internet-how-it-works.html"
-                   class="read-link">
-
-                    Read Article
-
-                    <i class="fa-solid fa-arrow-right"></i>
-
+                <a href="posts/llm-tokens-to-text.html" class="read-link">
+                    Read Article <i class="fa-solid fa-arrow-right"></i>
                 </a>
-
             </div>
 
         </article>
 
     </div>
-
 </section>
 
-
-<!-- =========================================================
+<!-- =====================================================
      ARTICLES
-========================================================= -->
+====================================================== -->
 
-<section class="articles">
-
+<section class="section">
     <div class="container">
 
         <div class="section-header">
-
-            <div class="section-label">
-                Knowledge
-            </div>
-
-            <h2 class="section-title">
-                Latest Articles
-            </h2>
-
+            <div class="section-label">Knowledge Base</div>
+            <h2 class="section-title">Latest Articles</h2>
+            <p class="section-description">
+                Practical explanations designed for students, IT beginners,
+                cloud engineers and AI/ML enthusiasts.
+            </p>
         </div>
-
 
         <div class="article-grid" id="articleGrid">
 
-
-            <!-- =================================================
-                 INTERNET ARTICLE
-            ================================================== -->
-
-            <article class="article-card"
-                     data-category="networking"
-                     data-title="How Does the Internet Actually Work">
-
-                <div class="article-top">
-                    <i class="fa-solid fa-globe"></i>
-                </div>
-
+            <!-- LLM -->
+            <article class="article-card reveal-up" data-category="llm" data-title="Understanding Large Language Models">
+                <div class="article-top"><i class="fa-solid fa-brain"></i></div>
                 <div class="article-body">
-
-                    <div class="meta">
-
-                        <span class="tag">
-                            Networking
-                        </span>
-
-                        <span>
-                            10 min read
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        How Does the Internet Actually Work?
-                    </h3>
-
-                    <p>
-                        Understand DNS, IP addresses, routers, TCP/IP,
-                        HTTP, servers and what happens when you open
-                        a website.
-                    </p>
-
+                    <div class="meta"><span class="tag">LLM</span><span>9 min read</span></div>
+                    <h3>Understanding Large Language Models</h3>
+                    <p>How LLMs like GPT and Claude are trained, what "parameters" actually means, and why scale changes behavior.</p>
                     <div class="article-footer">
-
-                        <a href="posts/internet-how-it-works.html"
-                           class="read-link">
-
-                            Read Article
-                            <i class="fa-solid fa-arrow-right"></i>
-
-                        </a>
-
+                        <a href="posts/understanding-llms.html" class="read-link">Read Article <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
-
                 </div>
-
             </article>
 
-<!-- =================================================
-     DNS EXPLAINED
-================================================== -->
+            <!-- LLM: Transformers -->
+            <article class="article-card reveal-up" data-category="llm" data-title="Transformers and the Attention Mechanism Explained">
+                <div class="article-top"><i class="fa-solid fa-diagram-project"></i></div>
+                <div class="article-body">
+                    <div class="meta"><span class="tag">LLM</span><span>10 min read</span></div>
+                    <h3>Transformers & the Attention Mechanism</h3>
+                    <p>The architecture behind every modern LLM — self-attention, positional encoding and why it replaced RNNs.</p>
+                    <div class="article-footer">
+                        <a href="#" class="read-link">Coming Soon <i class="fa-solid fa-clock"></i></a>
+                    </div>
+                </div>
+            </article>
 
-<article class="article-card"
-         data-category="networking"
-         data-title="DNS Explained How Domain Names Work">
+            <!-- GenAI -->
+            <article class="article-card reveal-up" data-category="genai" data-title="Generative AI Explained From Prompts to Production">
+                <div class="article-top"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                <div class="article-body">
+                    <div class="meta"><span class="tag">GenAI</span><span>8 min read</span></div>
+                    <h3>Generative AI: From Prompts to Production</h3>
+                    <p>How raw model output becomes a real product — prompting, fine-tuning, guardrails and deployment basics.</p>
+                    <div class="article-footer">
+                        <a href="#" class="read-link">Coming Soon <i class="fa-solid fa-clock"></i></a>
+                    </div>
+                </div>
+            </article>
 
-    <div class="article-top">
-        <i class="fa-solid fa-server"></i>
-    </div>
+            <!-- GenAI: RAG -->
+            <article class="article-card reveal-up" data-category="genai" data-title="RAG Retrieval Augmented Generation Explained">
+                <div class="article-top"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+                <div class="article-body">
+                    <div class="meta"><span class="tag">GenAI</span><span>7 min read</span></div>
+                    <h3>RAG: Retrieval-Augmented Generation Explained</h3>
+                    <p>Why LLMs hallucinate, and how connecting them to your own data with RAG fixes it — with a real architecture diagram.</p>
+                    <div class="article-footer">
+                        <a href="#" class="read-link">Coming Soon <i class="fa-solid fa-clock"></i></a>
+                    </div>
+                </div>
+            </article>
 
-    <div class="article-body">
+            <!-- Deep Learning -->
+            <article class="article-card reveal-up" data-category="dl" data-title="Deep Learning Fundamentals Neural Networks Demystified">
+                <div class="article-top"><i class="fa-solid fa-share-nodes"></i></div>
+                <div class="article-body">
+                    <div class="meta"><span class="tag">Deep Learning</span><span>9 min read</span></div>
+                    <h3>Deep Learning Fundamentals: Neural Networks Demystified</h3>
+                    <p>Neurons, layers, weights, backpropagation and gradient descent — the math made visual and intuitive.</p>
+                    <div class="article-footer">
+                        <a href="#" class="read-link">Coming Soon <i class="fa-solid fa-clock"></i></a>
+                    </div>
+                </div>
+            </article>
 
-        <div class="meta">
+            <!-- Agentic AI -->
+            <article class="article-card reveal-up" data-category="agentic" data-title="Agentic AI How AI Agents Plan Reason and Act">
+                <div class="article-top"><i class="fa-solid fa-robot"></i></div>
+                <div class="article-body">
+                    <div class="meta"><span class="tag">Agentic AI</span><span>8 min read</span></div>
+                    <h3>Agentic AI: How AI Agents Plan, Reason and Act</h3>
+                    <p>Tool use, memory and multi-step reasoning loops — what makes an "agent" different from a chatbot.</p>
+                    <div class="article-footer">
+                        <a href="#" class="read-link">Coming Soon <i class="fa-solid fa-clock"></i></a>
+                    </div>
+                </div>
+            </article>
 
-            <span class="tag">
-                Networking
-            </span>
+            <!-- INTERNET -->
+            <article class="article-card reveal-up" data-category="networking" data-title="How Does the Internet Actually Work">
+                <div class="article-top"><i class="fa-solid fa-globe"></i></div>
+                <div class="article-body">
+                    <div class="meta"><span class="tag">Networking</span><span>10 min read</span></div>
+                    <h3>How Does the Internet Actually Work?</h3>
+                    <p>Understand DNS, IP addresses, routers, TCP/IP, HTTP, servers and what happens when you open a website.</p>
+                    <div class="article-footer">
+                        <a href="posts/internet-how-it-works.html" class="read-link">Read Article <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </article>
 
-            <span>
-                8 min read
-            </span>
+            <!-- DNS -->
+            <article class="article-card reveal-up" data-category="networking" data-title="DNS Explained How Domain Names Work">
+                <div class="article-top"><i class="fa-solid fa-server"></i></div>
+                <div class="article-body">
+                    <div class="meta"><span class="tag">Networking</span><span>8 min read</span></div>
+                    <h3>DNS Explained: How Domain Names Work</h3>
+                    <p>Learn how DNS converts human-readable domain names into IP addresses, step by step.</p>
+                    <div class="article-footer">
+                        <a href="posts/dns-explained.html" class="read-link">Read Article <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- AWS LAMBDA -->
+            <article class="article-card reveal-up" data-category="aws" data-title="AWS Lambda Explained for Beginners">
+                <div class="article-top"><i class="fa-brands fa-aws"></i></div>
+                <div class="article-body">
+                    <div class="meta"><span class="tag">AWS</span><span>6 min read</span></div>
+                    <h3>AWS Lambda Explained for Beginners</h3>
+                    <p>Learn serverless computing, Lambda functions, triggers, execution models and real-world use cases.</p>
+                    <div class="article-footer">
+                        <a href="posts/aws-lambda.html" class="read-link">Read Article <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- CLOUD -->
+            <article class="article-card reveal-up" data-category="cloud" data-title="Cloud Computing Complete Beginners Guide">
+                <div class="article-top"><i class="fa-solid fa-cloud"></i></div>
+                <div class="article-body">
+                    <div class="meta"><span class="tag">Cloud</span><span>7 min read</span></div>
+                    <h3>Cloud Computing: Complete Beginner's Guide</h3>
+                    <p>Understand IaaS, PaaS, SaaS, regions, availability zones, scalability and cloud fundamentals.</p>
+                    <div class="article-footer">
+                        <a href="#" class="read-link">Coming Soon <i class="fa-solid fa-clock"></i></a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- DEVOPS -->
+            <article class="article-card reveal-up" data-category="devops" data-title="DevOps Roadmap for IT Beginners">
+                <div class="article-top"><i class="fa-solid fa-gears"></i></div>
+                <div class="article-body">
+                    <div class="meta"><span class="tag">DevOps</span><span>8 min read</span></div>
+                    <h3>DevOps Roadmap for IT Beginners</h3>
+                    <p>A practical roadmap covering Linux, Git, Docker, Kubernetes, CI/CD and cloud technologies.</p>
+                    <div class="article-footer">
+                        <a href="#" class="read-link">Coming Soon <i class="fa-solid fa-clock"></i></a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- LINUX -->
+            <article class="article-card reveal-up" data-category="linux" data-title="Linux Basics Every Cloud Engineer Should Know">
+                <div class="article-top"><i class="fa-brands fa-linux"></i></div>
+                <div class="article-body">
+                    <div class="meta"><span class="tag">Linux</span><span>5 min read</span></div>
+                    <h3>Linux Basics Every Cloud Engineer Should Know</h3>
+                    <p>Learn essential Linux commands, file systems, permissions, processes and networking basics.</p>
+                    <div class="article-footer">
+                        <a href="#" class="read-link">Coming Soon <i class="fa-solid fa-clock"></i></a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- CYBERSECURITY -->
+            <article class="article-card reveal-up" data-category="security" data-title="Cybersecurity Fundamentals Every IT Beginner Should Learn">
+                <div class="article-top"><i class="fa-solid fa-shield-halved"></i></div>
+                <div class="article-body">
+                    <div class="meta"><span class="tag">Security</span><span>6 min read</span></div>
+                    <h3>Cybersecurity Fundamentals Every IT Beginner Should Learn</h3>
+                    <p>Explore the CIA triad, authentication, authorization, threats, vulnerabilities, IDS and SIEM.</p>
+                    <div class="article-footer">
+                        <a href="#" class="read-link">Coming Soon <i class="fa-solid fa-clock"></i></a>
+                    </div>
+                </div>
+            </article>
 
         </div>
-
-        <h3>
-            DNS Explained: How Domain Names Work
-        </h3>
-
-        <p>
-            Learn how DNS converts human-readable domain names
-            into IP addresses and discover the complete DNS
-            resolution process step by step.
-        </p>
-
-        <div class="article-footer">
-
-            <a href="posts/dns-explained.html"
-               class="read-link">
-
-                Read Article
-                <i class="fa-solid fa-arrow-right"></i>
-
-            </a>
-
-        </div>
-
-    </div>
-
-</article>
-            <!-- =================================================
-                 AWS LAMBDA
-            ================================================== -->
-
-            <article class="article-card"
-                     data-category="aws"
-                     data-title="AWS Lambda Explained for Beginners">
-
-                <div class="article-top">
-                    <i class="fa-brands fa-aws"></i>
-                </div>
-
-                <div class="article-body">
-
-                    <div class="meta">
-
-                        <span class="tag">
-                            AWS
-                        </span>
-
-                        <span>
-                            6 min read
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        AWS Lambda Explained for Beginners
-                    </h3>
-
-                    <p>
-                        Learn serverless computing, Lambda functions,
-                        triggers, execution models and real-world
-                        use cases.
-                    </p>
-
-                    <div class="article-footer">
-
-                        <a href="posts/aws-lambda.html"
-                           class="read-link">
-
-                            Read Article
-                            <i class="fa-solid fa-arrow-right"></i>
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <!-- =================================================
-                 CLOUD
-            ================================================== -->
-
-            <article class="article-card"
-                     data-category="cloud"
-                     data-title="Cloud Computing Complete Beginners Guide">
-
-                <div class="article-top">
-                    <i class="fa-solid fa-cloud"></i>
-                </div>
-
-                <div class="article-body">
-
-                    <div class="meta">
-
-                        <span class="tag">
-                            Cloud
-                        </span>
-
-                        <span>
-                            7 min read
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        Cloud Computing: Complete Beginner's Guide
-                    </h3>
-
-                    <p>
-                        Understand IaaS, PaaS, SaaS, regions,
-                        availability zones, scalability and
-                        cloud fundamentals.
-                    </p>
-
-                    <div class="article-footer">
-
-                        <a href="#"
-                           class="read-link">
-
-                            Coming Soon
-                            <i class="fa-solid fa-clock"></i>
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <!-- =================================================
-                 DEVOPS
-            ================================================== -->
-
-            <article class="article-card"
-                     data-category="devops"
-                     data-title="DevOps Roadmap for IT Beginners">
-
-                <div class="article-top">
-                    <i class="fa-solid fa-gears"></i>
-                </div>
-
-                <div class="article-body">
-
-                    <div class="meta">
-
-                        <span class="tag">
-                            DevOps
-                        </span>
-
-                        <span>
-                            8 min read
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        DevOps Roadmap for IT Beginners
-                    </h3>
-
-                    <p>
-                        A practical roadmap covering Linux, Git,
-                        Docker, Kubernetes, CI/CD and cloud
-                        technologies.
-                    </p>
-
-                    <div class="article-footer">
-
-                        <a href="#"
-                           class="read-link">
-
-                            Coming Soon
-                            <i class="fa-solid fa-clock"></i>
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <!-- =================================================
-                 LINUX
-            ================================================== -->
-
-            <article class="article-card"
-                     data-category="linux"
-                     data-title="Linux Basics Every Cloud Engineer Should Know">
-
-                <div class="article-top">
-                    <i class="fa-brands fa-linux"></i>
-                </div>
-
-                <div class="article-body">
-
-                    <div class="meta">
-
-                        <span class="tag">
-                            Linux
-                        </span>
-
-                        <span>
-                            5 min read
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        Linux Basics Every Cloud Engineer Should Know
-                    </h3>
-
-                    <p>
-                        Learn essential Linux commands, file systems,
-                        permissions, processes and networking basics.
-                    </p>
-
-                    <div class="article-footer">
-
-                        <a href="#"
-                           class="read-link">
-
-                            Coming Soon
-                            <i class="fa-solid fa-clock"></i>
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <!-- =================================================
-                 NETWORKING
-            ================================================== -->
-
-            <article class="article-card"
-                     data-category="networking"
-                     data-title="Networking Fundamentals for Cloud Engineers">
-
-                <div class="article-top">
-                    <i class="fa-solid fa-network-wired"></i>
-                </div>
-
-                <div class="article-body">
-
-                    <div class="meta">
-
-                        <span class="tag">
-                            Networking
-                        </span>
-
-                        <span>
-                            7 min read
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        Networking Fundamentals for Cloud Engineers
-                    </h3>
-
-                    <p>
-                        Understand IP addresses, DNS, TCP/IP, ports,
-                        routing, subnets and security groups.
-                    </p>
-
-                    <div class="article-footer">
-
-                        <a href="#"
-                           class="read-link">
-
-                            Coming Soon
-                            <i class="fa-solid fa-clock"></i>
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <!-- =================================================
-                 CYBERSECURITY
-            ================================================== -->
-
-            <article class="article-card"
-                     data-category="security"
-                     data-title="Cybersecurity Fundamentals Every IT Beginner Should Learn">
-
-                <div class="article-top">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </div>
-
-                <div class="article-body">
-
-                    <div class="meta">
-
-                        <span class="tag">
-                            Security
-                        </span>
-
-                        <span>
-                            6 min read
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        Cybersecurity Fundamentals Every IT Beginner Should Learn
-                    </h3>
-
-                    <p>
-                        Explore the CIA triad, authentication,
-                        authorization, threats, vulnerabilities,
-                        IDS and SIEM.
-                    </p>
-
-                    <div class="article-footer">
-
-                        <a href="#"
-                           class="read-link">
-
-                            Coming Soon
-                            <i class="fa-solid fa-clock"></i>
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-
-        </div>
-
 
         <div class="empty-state" id="emptyState">
-
             <i class="fa-solid fa-magnifying-glass"></i>
-
-            <p>
-                No articles found. Try another search or category.
-            </p>
-
+            <p>No articles found. Try another search or category.</p>
         </div>
 
     </div>
-
 </section>
 
+<!-- =====================================================
+     AI / GENAI / AGENTIC AI STRIP
+====================================================== -->
 
-<!-- =========================================================
-     NEWSLETTER / CTA
-========================================================= -->
+<section class="ai-section">
+    <div class="container">
+
+        <div class="section-header">
+            <div class="section-label">Future Technology</div>
+            <h2 class="section-title">LLM • GenAI • Deep Learning • Agentic AI</h2>
+            <p class="section-description">
+                How large language models and intelligent agents are changing
+                software development, cloud engineering and automation.
+            </p>
+        </div>
+
+        <div class="ai-grid">
+
+            <article class="ai-card reveal-up" data-category="llm">
+                <div class="ai-icon"><i class="fa-solid fa-brain"></i></div>
+                <h3>Large Language Models</h3>
+                <p>Tokenization, embeddings, attention and next-token prediction — how LLMs turn text into understanding.</p>
+            </article>
+
+            <article class="ai-card reveal-up" data-category="genai">
+                <div class="ai-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                <h3>Generative AI</h3>
+                <p>Prompts, RAG, embeddings and real applications built on top of foundation models.</p>
+            </article>
+
+            <article class="ai-card reveal-up" data-category="dl">
+                <div class="ai-icon"><i class="fa-solid fa-share-nodes"></i></div>
+                <h3>Deep Learning</h3>
+                <p>Neural networks, backpropagation and the math that makes modern AI possible.</p>
+            </article>
+
+            <article class="ai-card reveal-up" data-category="agentic">
+                <div class="ai-icon"><i class="fa-solid fa-robot"></i></div>
+                <h3>Agentic AI</h3>
+                <p>How AI agents use tools, memory and reasoning loops to perform multi-step tasks.</p>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================
+     CTA
+====================================================== -->
 
 <section class="newsletter">
-
     <div class="container">
-
-        <div class="newsletter-box">
-
-            <div class="section-label">
-                Stay Curious
-            </div>
-
-            <h2>
-                Learn something new every week.
-            </h2>
-
+        <div class="newsletter-box reveal-up">
+            <div class="section-label">Keep Learning</div>
+            <h2>Build. Learn. Automate. Repeat.</h2>
             <p>
-                Follow my journey through technology, networking,
-                cybersecurity, AWS, DevOps and practical IT projects.
+                Follow my journey through LLMs, Generative AI, Deep Learning,
+                AWS, Cloud Engineering, DevOps, Linux, Networking and
+                Cybersecurity.
             </p>
-
         </div>
-
     </div>
-
 </section>
 
-
-<!-- =========================================================
+<!-- =====================================================
      FOOTER
-========================================================= -->
+====================================================== -->
 
 <footer>
-
     <div class="container">
-
         <div class="footer-grid">
 
             <div class="footer-brand">
-
-                <h2>
-                    Suraj<span style="color:#60a5fa;">.</span>
-                </h2>
-
-                <p>
-                    Cloud & IT enthusiast building practical projects,
-                    learning modern technologies and sharing knowledge
-                    through technical articles.
-                </p>
-
+                <h2>Suraj<span>.</span></h2>
+                <p>Cloud, AI & IT enthusiast building practical projects, learning modern technologies and sharing technical knowledge.</p>
             </div>
 
-
             <div class="footer-column">
-
-                <h4>
-                    Navigation
-                </h4>
-
-                <a href="index.html">Home</a>
-                <a href="about.html">About</a>
-                <a href="portfolio.html">Portfolio</a>
+                <h4>Navigation</h4>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../portfolio.html">Portfolio</a>
                 <a href="blog.html">Blog</a>
-                <a href="contact.html">Contact</a>
-
+                <a href="../contact.html">Contact</a>
             </div>
-
 
             <div class="footer-column">
-
-                <h4>
-                    Topics
-                </h4>
-
-                <a href="#"
-                   onclick="filterCategory('networking'); return false;">
-                    Networking
-                </a>
-
-                <a href="#"
-                   onclick="filterCategory('aws'); return false;">
-                    AWS
-                </a>
-
-                <a href="#"
-                   onclick="filterCategory('devops'); return false;">
-                    DevOps
-                </a>
-
-                <a href="#"
-                   onclick="filterCategory('linux'); return false;">
-                    Linux
-                </a>
-
-                <a href="#"
-                   onclick="filterCategory('security'); return false;">
-                    Cybersecurity
-                </a>
-
+                <h4>Topics</h4>
+                <a href="#" onclick="filterCategory('llm'); return false;">LLM</a>
+                <a href="#" onclick="filterCategory('genai'); return false;">Generative AI</a>
+                <a href="#" onclick="filterCategory('dl'); return false;">Deep Learning</a>
+                <a href="#" onclick="filterCategory('agentic'); return false;">Agentic AI</a>
+                <a href="#" onclick="filterCategory('aws'); return false;">AWS</a>
+                <a href="#" onclick="filterCategory('devops'); return false;">DevOps</a>
             </div>
 
         </div>
 
-
-        <div class="copyright">
-
-            © 2026 Suraj Pandey. All rights reserved.
-
-        </div>
-
+        <div class="copyright">© 2026 Suraj Pandey. All rights reserved.</div>
     </div>
-
 </footer>
 
-
-<!-- =========================================================
+<!-- =====================================================
      JAVASCRIPT
-========================================================= -->
+====================================================== -->
 
 <script>
 
-    const searchInput =
-        document.getElementById("searchInput");
+    /* ---------------------------------------------------
+       MOBILE MENU
+    --------------------------------------------------- */
 
-    const articleCards =
-        document.querySelectorAll(".article-card");
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
 
-    const filterButtons =
-        document.querySelectorAll(".filter-btn");
+    menuToggle.addEventListener("click", function () {
+        navLinks.classList.toggle("show");
+        const icon = menuToggle.querySelector("i");
+        icon.classList.toggle("fa-bars");
+        icon.classList.toggle("fa-xmark");
+    });
 
-    const emptyState =
-        document.getElementById("emptyState");
+    /* ---------------------------------------------------
+       SEARCH + FILTER
+    --------------------------------------------------- */
 
-    const menuToggle =
-        document.getElementById("menuToggle");
-
-    const navLinks =
-        document.getElementById("navLinks");
-
+    const searchInput = document.getElementById("searchInput");
+    const articleCards = document.querySelectorAll(".article-card");
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const emptyState = document.getElementById("emptyState");
 
     let currentCategory = "all";
 
-
-    /* =========================================================
-       MOBILE MENU
-    ========================================================= */
-
-    menuToggle.addEventListener("click", function () {
-
-        navLinks.classList.toggle("show");
-
-        const icon =
-            menuToggle.querySelector("i");
-
-        if (navLinks.classList.contains("show")) {
-
-            icon.classList.remove("fa-bars");
-            icon.classList.add("fa-xmark");
-
-        } else {
-
-            icon.classList.remove("fa-xmark");
-            icon.classList.add("fa-bars");
-
-        }
-
-    });
-
-
-    /* =========================================================
-       FILTER FUNCTION
-    ========================================================= */
-
     function filterArticles() {
-
-        const searchTerm =
-            searchInput.value
-                .toLowerCase()
-                .trim();
-
+        const searchTerm = searchInput.value.toLowerCase().trim();
         let visibleCount = 0;
 
-
         articleCards.forEach(function (card) {
+            const category = card.dataset.category;
+            const title = card.dataset.title.toLowerCase();
+            const text = card.innerText.toLowerCase();
 
-            const category =
-                card.dataset.category;
-
-            const title =
-                card.dataset.title.toLowerCase();
-
-            const text =
-                card.innerText.toLowerCase();
-
-
-            const categoryMatch =
-                currentCategory === "all" ||
-                category === currentCategory;
-
-
-            const searchMatch =
-                title.includes(searchTerm) ||
-                text.includes(searchTerm);
-
+            const categoryMatch = currentCategory === "all" || category === currentCategory;
+            const searchMatch = title.includes(searchTerm) || text.includes(searchTerm);
 
             if (categoryMatch && searchMatch) {
-
                 card.style.display = "flex";
                 visibleCount++;
-
             } else {
-
                 card.style.display = "none";
-
             }
-
         });
 
-
-        if (visibleCount === 0) {
-
-            emptyState.style.display = "block";
-
-        } else {
-
-            emptyState.style.display = "none";
-
-        }
-
+        emptyState.style.display = visibleCount === 0 ? "block" : "none";
     }
 
-
-    /* =========================================================
-       CATEGORY BUTTONS
-    ========================================================= */
-
     filterButtons.forEach(function (button) {
-
         button.addEventListener("click", function () {
-
-            filterButtons.forEach(function (btn) {
-
-                btn.classList.remove("active");
-
-            });
-
-
+            filterButtons.forEach(btn => btn.classList.remove("active"));
             button.classList.add("active");
-
-
-            currentCategory =
-                button.dataset.filter;
-
-
+            currentCategory = button.dataset.filter;
             filterArticles();
-
         });
-
     });
 
-
-    /* =========================================================
-       SEARCH
-    ========================================================= */
-
-    searchInput.addEventListener(
-        "input",
-        filterArticles
-    );
-
-
-    /* =========================================================
-       FOOTER CATEGORY FILTER
-    ========================================================= */
+    searchInput.addEventListener("input", filterArticles);
 
     function filterCategory(category) {
-
         currentCategory = category;
-
-
         filterButtons.forEach(function (button) {
+            button.classList.toggle("active", button.dataset.filter === category);
+        });
+        filterArticles();
+        window.scrollTo({
+            top: document.querySelector(".article-grid").offsetTop - 100,
+            behavior: "smooth"
+        });
+    }
 
-            button.classList.remove("active");
+    /* ---------------------------------------------------
+       SCROLL REVEAL — IntersectionObserver, staggered
+    --------------------------------------------------- */
 
-            if (button.dataset.filter === category) {
+    const revealTargets = document.querySelectorAll(".reveal-up");
 
-                button.classList.add("active");
+    const revealObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry, i) {
+            if (entry.isIntersecting) {
+                const delay = (entry.target.dataset.revealIndex || 0) * 60;
+                setTimeout(() => entry.target.classList.add("is-visible"), delay);
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15 });
 
+    revealTargets.forEach(function (el, i) {
+        el.dataset.revealIndex = i % 6;
+        revealObserver.observe(el);
+    });
+
+    /* ---------------------------------------------------
+       TILT HOVER on article cards (subtle 3D)
+    --------------------------------------------------- */
+
+    document.querySelectorAll(".article-card, .featured-card").forEach(function (card) {
+        card.addEventListener("mousemove", function (e) {
+            const rect = card.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width - 0.5;
+            const y = (e.clientY - rect.top) / rect.height - 0.5;
+            card.style.transform = `perspective(700px) rotateY(${x * 5}deg) rotateX(${-y * 5}deg) translateY(-4px)`;
+        });
+        card.addEventListener("mouseleave", function () {
+            card.style.transform = "";
+        });
+    });
+
+    /* ---------------------------------------------------
+       NEURAL NETWORK CANVAS ANIMATION
+       Reused for both the hero background and the
+       featured-article visual, at different densities.
+    --------------------------------------------------- */
+
+    function initNeuralCanvas(canvasId, nodeCount, opts) {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        const settings = Object.assign({ linkDist: 140, speed: 0.25, color: "124, 92, 255" }, opts || {});
+
+        let width, height, nodes;
+
+        function resize() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            width = canvas.width = rect.width;
+            height = canvas.height = rect.height;
+        }
+
+        function makeNodes() {
+            nodes = [];
+            for (let i = 0; i < nodeCount; i++) {
+                nodes.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * settings.speed,
+                    vy: (Math.random() - 0.5) * settings.speed,
+                    r: Math.random() * 1.6 + 1
+                });
+            }
+        }
+
+        function step() {
+            ctx.clearRect(0, 0, width, height);
+
+            nodes.forEach(function (n) {
+                n.x += n.vx;
+                n.y += n.vy;
+                if (n.x < 0 || n.x > width) n.vx *= -1;
+                if (n.y < 0 || n.y > height) n.vy *= -1;
+            });
+
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const dx = nodes[i].x - nodes[j].x;
+                    const dy = nodes[i].y - nodes[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < settings.linkDist) {
+                        ctx.strokeStyle = `rgba(${settings.color}, ${1 - dist / settings.linkDist})`;
+                        ctx.lineWidth = 0.6;
+                        ctx.beginPath();
+                        ctx.moveTo(nodes[i].x, nodes[i].y);
+                        ctx.lineTo(nodes[j].x, nodes[j].y);
+                        ctx.stroke();
+                    }
+                }
             }
 
-        });
+            nodes.forEach(function (n) {
+                ctx.beginPath();
+                ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${settings.color}, 0.9)`;
+                ctx.fill();
+            });
 
+            requestAnimationFrame(step);
+        }
 
-        filterArticles();
+        resize();
+        makeNodes();
+        step();
+        window.addEventListener("resize", function () { resize(); makeNodes(); });
+    }
 
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-        window.scrollTo({
-
-            top: document.querySelector(".articles").offsetTop - 80,
-
-            behavior: "smooth"
-
-        });
-
+    if (!prefersReducedMotion) {
+        initNeuralCanvas("heroCanvas", 55, { linkDist: 150, speed: 0.22, color: "124, 92, 255" });
+        initNeuralCanvas("featuredCanvas", 26, { linkDist: 110, speed: 0.3, color: "244, 114, 182" });
     }
 
 </script>
 
 </body>
 </html>
-```

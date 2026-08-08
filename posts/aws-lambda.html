@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AWS Lambda Explained for Beginners | Suraj Pandey</title>
+
+    <meta name="description"
+          content="Learn AWS Lambda, serverless computing, functions, triggers, execution model and real-world use cases.">
+
+    <link rel="stylesheet" href="../blog.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header class="blog-header">
+        <div class="container nav-container">
+
+            <a href="../index.html" class="logo">
+                Suraj<span>.</span>
+            </a>
+
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../portfolio.html">Portfolio</a>
+                <a href="../blog.html">Blog</a>
+                <a href="../contact.html">Contact</a>
+            </nav>
+
+        </div>
+    </header>
+
+
+    <!-- Article Header -->
+    <main>
+
+        <section class="article-hero">
+
+            <div class="container">
+
+                <div class="article-category">
+                    AWS • CLOUD
+                </div>
+
+                <h1>
+                    AWS Lambda Explained for Beginners
+                </h1>
+
+                <p class="article-intro">
+                    Understand AWS Lambda, serverless computing, functions,
+                    triggers, execution, pricing and real-world use cases.
+                </p>
+
+                <div class="article-meta">
+                    <span>By Suraj Pandey</span>
+                    <span>•</span>
+                    <span>8 August 2026</span>
+                    <span>•</span>
+                    <span>6 min read</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Article Content -->
+        <section class="article-content">
+
+            <div class="container article-layout">
+
+                <article>
+
+                    <h2>What is AWS Lambda?</h2>
+
+                    <p>
+                        AWS Lambda is a serverless compute service provided by
+                        Amazon Web Services. It allows developers to run code
+                        without managing servers or operating systems.
+                    </p>
+
+                    <p>
+                        Instead of creating and maintaining an EC2 server,
+                        you upload your application code to Lambda and AWS
+                        automatically manages the underlying infrastructure.
+                    </p>
+
+
+                    <h2>How AWS Lambda Works</h2>
+
+                    <p>
+                        Lambda executes your code when an event or request
+                        triggers the function. The function runs only when
+                        required and AWS automatically handles the required
+                        compute resources.
+                    </p>
+
+                    <div class="code-box">
+<pre>
+User
+  ↓
+API Gateway
+  ↓
+AWS Lambda
+  ↓
+Application Logic
+  ↓
+Database / AWS Service
+</pre>
+                    </div>
+
+
+                    <h2>Key Components</h2>
+
+                    <h3>1. Lambda Function</h3>
+
+                    <p>
+                        A Lambda function contains the code that AWS executes.
+                        You can write Lambda functions using languages such as
+                        Python, JavaScript, Java and other supported runtimes.
+                    </p>
+
+
+                    <h3>2. Trigger</h3>
+
+                    <p>
+                        A trigger starts the Lambda function. Common triggers
+                        include API Gateway, S3 events, EventBridge,
+                        DynamoDB Streams and scheduled events.
+                    </p>
+
+
+                    <h3>3. Execution Role</h3>
+
+                    <p>
+                        Lambda uses an IAM execution role to access AWS
+                        resources. For example, a Lambda function can be given
+                        permission to read or write data in DynamoDB.
+                    </p>
+
+
+                    <h2>AWS Lambda with API Gateway</h2>
+
+                    <p>
+                        One of the most common serverless architectures is
+                        API Gateway combined with Lambda.
+                    </p>
+
+                    <div class="code-box">
+<pre>
+Client
+   ↓
+API Gateway
+   ↓
+Lambda
+   ↓
+DynamoDB
+</pre>
+                    </div>
+
+                    <p>
+                        API Gateway receives an HTTP request and invokes the
+                        Lambda function. Lambda processes the request and
+                        returns a response through API Gateway.
+                    </p>
+
+
+                    <h2>My Serverless URL Shortener Project</h2>
+
+                    <p>
+                        I used AWS Lambda while building a serverless URL
+                        shortener project.
+                    </p>
+
+                    <p>
+                        The project uses Amazon API Gateway to receive HTTP
+                        requests, AWS Lambda to process the URL, and Amazon
+                        DynamoDB to store the relationship between the short
+                        code and the original URL.
+                    </p>
+
+                    <div class="code-box">
+<pre>
+User
+  ↓
+API Gateway
+  ↓
+Lambda
+  ↓
+DynamoDB
+  ↓
+Short URL
+</pre>
+                    </div>
+
+
+                    <h2>Advantages of AWS Lambda</h2>
+
+                    <ul>
+                        <li>No server management</li>
+                        <li>Automatic scaling</li>
+                        <li>Pay-per-use pricing model</li>
+                        <li>Easy integration with AWS services</li>
+                        <li>Good choice for event-driven applications</li>
+                        <li>Useful for APIs and backend applications</li>
+                    </ul>
+
+
+                    <h2>When Should You Use Lambda?</h2>
+
+                    <p>
+                        AWS Lambda is especially useful for APIs, automation,
+                        event processing, scheduled tasks, file processing,
+                        serverless applications and backend services.
+                    </p>
+
+
+                    <h2>Conclusion</h2>
+
+                    <p>
+                        AWS Lambda is one of the most important services to
+                        understand when learning cloud computing and
+                        serverless architecture.
+                    </p>
+
+                    <p>
+                        For beginners, a great way to learn Lambda is to build
+                        a small project using Lambda, API Gateway and DynamoDB.
+                        Building real projects makes cloud concepts much easier
+                        to understand.
+                    </p>
+
+
+                    <div class="article-project">
+
+                        <h3>🚀 Want to see the project?</h3>
+
+                        <p>
+                            Check out my Serverless URL Shortener project
+                            built using AWS Lambda, API Gateway and DynamoDB.
+                        </p>
+
+                        <a
+                            href="https://github.com/Surajpandey1999/serverless-url-shortener"
+                            target="_blank"
+                            rel="noopener noreferrer">
+                            View Project on GitHub →
+                        </a>
+
+                    </div>
+
+                </article>
+
+
+                <!-- Sidebar -->
+                <aside class="article-sidebar">
+
+                    <div class="sidebar-card">
+
+                        <h3>In this article</h3>
+
+                        <a href="#top">AWS Lambda</a>
+                        <a href="#top">How Lambda Works</a>
+                        <a href="#top">Lambda Components</a>
+                        <a href="#top">API Gateway</a>
+                        <a href="#top">Real Project</a>
+                        <a href="#top">Advantages</a>
+
+                    </div>
+
+                    <div class="sidebar-card">
+
+                        <h3>Topics</h3>
+
+                        <span>AWS</span>
+                        <span>Cloud</span>
+                        <span>Serverless</span>
+                        <span>Lambda</span>
+
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="container">
+
+            <h3>Suraj.</h3>
+
+            <p>
+                Cloud & IT Enthusiast building practical technology projects.
+            </p>
+
+            <div class="footer-links">
+
+                <a href="../index.html">Home</a>
+                <a href="../portfolio.html">Portfolio</a>
+                <a href="../blog.html">Blog</a>
+                <a href="../contact.html">Contact</a>
+
+            </div>
+
+            <p class="copyright">
+                © 2026 Suraj Pandey. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+</body>
+</html>

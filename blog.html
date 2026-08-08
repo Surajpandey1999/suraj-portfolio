@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,62 +8,731 @@
     <title>Technical Blog | Suraj Pandey</title>
 
     <meta name="description"
-          content="Practical articles about AWS, Cloud Computing, DevOps, Linux, Networking and Cybersecurity by Suraj Pandey.">
+          content="Practical articles about technology, networking, cybersecurity, AWS, DevOps, Linux and modern IT concepts by Suraj Pandey.">
 
-    <link rel="stylesheet" href="blog.css">
+    <meta name="author" content="Suraj Pandey">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        /* =========================================================
+           RESET
+        ========================================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background: #f7f9fc;
+            color: #172033;
+            line-height: 1.7;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+        .container {
+            width: min(1180px, 92%);
+            margin: auto;
+        }
+
+        /* =========================================================
+           NAVBAR
+        ========================================================= */
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid #e7ebf2;
+        }
+
+        .nav-container {
+            min-height: 74px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 1.45rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: #2563eb;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #4b5563;
+            transition: 0.25s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #2563eb;
+        }
+
+        .menu-toggle {
+            display: none;
+            border: 0;
+            background: transparent;
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+
+        /* =========================================================
+           HERO
+        ========================================================= */
+
+        .hero {
+            padding: 90px 0 70px;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(37, 99, 235, 0.08), transparent 30%),
+                radial-gradient(circle at 85% 30%, rgba(14, 165, 233, 0.07), transparent 30%);
+        }
+
+        .hero-content {
+            max-width: 850px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #2563eb;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 28px;
+            height: 2px;
+            background: #2563eb;
+        }
+
+        .hero h1 {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4.8rem);
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 span {
+            color: #2563eb;
+        }
+
+        .hero p {
+            max-width: 720px;
+            color: #64748b;
+            font-size: 1.08rem;
+        }
+
+        /* =========================================================
+           SEARCH + FILTER
+        ========================================================= */
+
+        .tools {
+            padding-bottom: 55px;
+        }
+
+        .tools-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 260px;
+            max-width: 420px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 17px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        .search-box input {
+            width: 100%;
+            height: 48px;
+            padding: 0 18px 0 46px;
+            border: 1px solid #dce2ea;
+            border-radius: 12px;
+            outline: none;
+            background: #fff;
+            color: #172033;
+            transition: 0.25s ease;
+        }
+
+        .search-box input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+        }
+
+        .filters {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            border: 1px solid #dce2ea;
+            background: #fff;
+            color: #475569;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.82rem;
+            font-weight: 700;
+            transition: 0.25s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #2563eb;
+            border-color: #2563eb;
+            color: #fff;
+        }
+
+        /* =========================================================
+           FEATURED ARTICLE
+        ========================================================= */
+
+        .section-header {
+            margin-bottom: 25px;
+        }
+
+        .section-label {
+            color: #2563eb;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 2rem;
+            margin-top: 5px;
+        }
+
+        .featured {
+            padding-bottom: 80px;
+        }
+
+        .featured-card {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            min-height: 390px;
+            overflow: hidden;
+            border-radius: 24px;
+            background: #111827;
+            color: #fff;
+            box-shadow: 0 18px 50px rgba(15, 23, 42, 0.14);
+        }
+
+        .featured-visual {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 45px;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 30% 25%, rgba(59, 130, 246, 0.38), transparent 28%),
+                radial-gradient(circle at 80% 70%, rgba(14, 165, 233, 0.2), transparent 30%),
+                #0f172a;
+        }
+
+        .featured-visual::before {
+            content: "</>";
+            position: absolute;
+            font-family: monospace;
+            font-size: 10rem;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.035);
+        }
+
+        .visual-icon {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #60a5fa;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .featured-content {
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .meta {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 17px;
+            font-size: 0.78rem;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .featured-content .meta {
+            color: #94a3b8;
+        }
+
+        .tag {
+            display: inline-flex;
+            padding: 5px 9px;
+            border-radius: 7px;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .featured-content .tag {
+            background: rgba(59, 130, 246, 0.14);
+            color: #60a5fa;
+        }
+
+        .featured-content h2 {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .featured-content p {
+            color: #aab5c5;
+            margin-bottom: 25px;
+        }
+
+        .read-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: #2563eb;
+            transition: 0.25s ease;
+        }
+
+        .featured-content .read-link {
+            color: #60a5fa;
+        }
+
+        .read-link:hover {
+            gap: 13px;
+        }
+
+        /* =========================================================
+           ARTICLE GRID
+        ========================================================= */
+
+        .articles {
+            padding-bottom: 90px;
+        }
+
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .article-card {
+            display: flex;
+            flex-direction: column;
+            min-height: 360px;
+            background: #fff;
+            border: 1px solid #e6eaf0;
+            border-radius: 18px;
+            overflow: hidden;
+            transition: 0.3s ease;
+        }
+
+        .article-card:hover {
+            transform: translateY(-6px);
+            border-color: #cbd5e1;
+            box-shadow: 0 16px 35px rgba(15, 23, 42, 0.08);
+        }
+
+        .article-top {
+            height: 135px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #eff6ff, #f8fafc);
+            color: #2563eb;
+            font-size: 2.8rem;
+        }
+
+        .article-body {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            padding: 25px;
+        }
+
+        .article-body .meta {
+            margin-bottom: 13px;
+        }
+
+        .article-body h3 {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 1.25rem;
+            line-height: 1.35;
+            margin-bottom: 12px;
+        }
+
+        .article-body p {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .article-footer {
+            margin-top: auto;
+        }
+
+        /* =========================================================
+           EMPTY SEARCH STATE
+        ========================================================= */
+
+        .empty-state {
+            display: none;
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748b;
+        }
+
+        .empty-state i {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            color: #94a3b8;
+        }
+
+        /* =========================================================
+           NEWSLETTER
+        ========================================================= */
+
+        .newsletter {
+            padding: 80px 0;
+            background: #eef4ff;
+        }
+
+        .newsletter-box {
+            text-align: center;
+            max-width: 720px;
+            margin: auto;
+        }
+
+        .newsletter-box h2 {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .newsletter-box p {
+            color: #64748b;
+        }
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        footer {
+            background: #0f172a;
+            color: #fff;
+            padding: 55px 0 25px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr;
+            gap: 50px;
+            padding-bottom: 40px;
+        }
+
+        .footer-brand h2 {
+            font-family: "Space Grotesk", sans-serif;
+            margin-bottom: 12px;
+        }
+
+        .footer-brand p {
+            max-width: 420px;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .footer-column h4 {
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .footer-column a {
+            display: block;
+            color: #94a3b8;
+            font-size: 0.88rem;
+            margin-bottom: 8px;
+            transition: 0.2s ease;
+        }
+
+        .footer-column a:hover {
+            color: #60a5fa;
+        }
+
+        .copyright {
+            padding-top: 22px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+            color: #64748b;
+            font-size: 0.78rem;
+        }
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 900px) {
+
+            .nav-links {
+                gap: 18px;
+            }
+
+            .featured-card {
+                grid-template-columns: 1fr;
+            }
+
+            .featured-visual {
+                min-height: 250px;
+            }
+
+            .article-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .nav-container {
+                min-height: 66px;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 66px;
+                left: 0;
+                right: 0;
+                display: none;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0;
+                background: #fff;
+                border-bottom: 1px solid #e7ebf2;
+                padding: 10px 4%;
+            }
+
+            .nav-links.show {
+                display: flex;
+            }
+
+            .nav-links li {
+                width: 100%;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 12px 0;
+            }
+
+            .hero {
+                padding: 65px 0 50px;
+            }
+
+            .hero h1 {
+                letter-spacing: -1.5px;
+            }
+
+            .tools-wrapper {
+                align-items: stretch;
+            }
+
+            .search-box {
+                max-width: none;
+            }
+
+            .filters {
+                width: 100%;
+            }
+
+            .filter-btn {
+                flex: 1;
+            }
+
+            .featured-content {
+                padding: 30px;
+            }
+
+            .article-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- ================= NAVBAR ================= -->
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
 
 <header class="navbar">
 
     <div class="container nav-container">
 
-        <a href="index.html" class="logo">
+        <a href="../index.html" class="logo">
             Suraj<span>.</span>
         </a>
 
-        <nav class="nav-links">
-
-            <a href="index.html">Home</a>
-            <a href="about.html">About</a>
-            <a href="portfolio.html">Portfolio</a>
-            <a href="services.html">Services</a>
-            <a href="blog.html" class="active">Blog</a>
-            <a href="contact.html">Contact</a>
-
-        </nav>
-
-        <button class="menu-btn" aria-label="Open menu">
-            ☰
+        <button class="menu-toggle"
+                id="menuToggle"
+                aria-label="Open navigation menu">
+            <i class="fa-solid fa-bars"></i>
         </button>
+
+        <ul class="nav-links" id="navLinks">
+
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+
+            <li>
+                <a href="about.html">About</a>
+            </li>
+
+            <li>
+                <a href="portfolio.html">Portfolio</a>
+            </li>
+
+            <li>
+                <a href="services.html">Services</a>
+            </li>
+
+            <li>
+                <a href="blog.html" class="active">Blog</a>
+            </li>
+
+            <li>
+                <a href="contact.html">Contact</a>
+            </li>
+
+        </ul>
 
     </div>
 
 </header>
 
 
-<!-- ================= HERO ================= -->
+<!-- =========================================================
+     HERO
+========================================================= -->
 
-<section class="blog-hero">
+<section class="hero">
 
-    <div class="container">
+    <div class="container hero-content">
 
-        <span class="hero-label">
-            TECHNICAL BLOG
-        </span>
+        <div class="eyebrow">
+            Technical Blog
+        </div>
 
         <h1>
-            Learn. Build.
-            <span>Share.</span>
+            Learn.
+            <span>Build.</span>
+            Share.
         </h1>
 
         <p>
-            Practical guides, tutorials and real-world experiences
-            covering AWS, Cloud Computing, DevOps, Linux,
-            Networking and Cybersecurity.
+            Practical articles explaining technology in simple language —
+            from networking and cybersecurity to AWS, DevOps, Linux and
+            modern IT concepts.
         </p>
 
     </div>
@@ -70,116 +740,150 @@
 </section>
 
 
-<!-- ================= CATEGORY FILTER ================= -->
+<!-- =========================================================
+     SEARCH + FILTER
+========================================================= -->
 
-<section class="categories">
+<section class="tools">
 
-    <div class="container category-container">
+    <div class="container">
 
-        <button class="category active" data-category="all">
-            All
-        </button>
+        <div class="tools-wrapper">
 
-        <button class="category" data-category="aws">
-            AWS
-        </button>
+            <div class="search-box">
 
-        <button class="category" data-category="cloud">
-            Cloud
-        </button>
+                <i class="fa-solid fa-magnifying-glass"></i>
 
-        <button class="category" data-category="devops">
-            DevOps
-        </button>
+                <input
+                    type="search"
+                    id="searchInput"
+                    placeholder="Search articles..."
+                    aria-label="Search articles">
 
-        <button class="category" data-category="linux">
-            Linux
-        </button>
+            </div>
 
-        <button class="category" data-category="networking">
-            Networking
-        </button>
+            <div class="filters">
 
-        <button class="category" data-category="cybersecurity">
-            Cybersecurity
-        </button>
+                <button class="filter-btn active"
+                        data-filter="all">
+                    All
+                </button>
+
+                <button class="filter-btn"
+                        data-filter="networking">
+                    Networking
+                </button>
+
+                <button class="filter-btn"
+                        data-filter="aws">
+                    AWS
+                </button>
+
+                <button class="filter-btn"
+                        data-filter="cloud">
+                    Cloud
+                </button>
+
+                <button class="filter-btn"
+                        data-filter="devops">
+                    DevOps
+                </button>
+
+                <button class="filter-btn"
+                        data-filter="linux">
+                    Linux
+                </button>
+
+                <button class="filter-btn"
+                        data-filter="security">
+                    Security
+                </button>
+
+            </div>
+
+        </div>
 
     </div>
 
 </section>
 
 
-<!-- ================= FEATURED ARTICLE ================= -->
+<!-- =========================================================
+     FEATURED ARTICLE
+========================================================= -->
 
-<section class="featured-section">
+<section class="featured">
 
     <div class="container">
 
-        <div class="section-heading">
+        <div class="section-header">
 
-            <span>FEATURED</span>
+            <div class="section-label">
+                Featured
+            </div>
 
-            <h2>
+            <h2 class="section-title">
                 Featured Article
             </h2>
 
         </div>
 
 
-        <article class="featured-card"
-                 data-category="aws">
+        <article class="featured-card">
 
-            <div class="featured-content">
+            <div class="featured-visual">
 
-                <div class="article-tag">
-                    AWS
+                <div class="visual-icon">
+                    <i class="fa-solid fa-network-wired"></i>
                 </div>
-
-                <div class="article-meta">
-                    8 Aug 2026
-                    <span>•</span>
-                    8 min read
-                </div>
-
-                <h3>
-                    Building a Serverless URL Shortener
-                    with AWS Lambda, API Gateway and DynamoDB
-                </h3>
-
-                <p>
-                    Learn how I built and deployed a serverless URL
-                    shortener using AWS Lambda, Amazon API Gateway,
-                    Amazon DynamoDB and AWS SAM.
-                </p>
-
-                <a href="posts/aws-lambda.html"
-                   class="read-more">
-                    Read Article
-                    <span>→</span>
-                </a>
 
             </div>
 
 
-            <div class="featured-visual">
+            <div class="featured-content">
 
-                <div class="architecture-card">
+                <div class="meta">
 
-                    <div>USER</div>
+                    <span class="tag">
+                        Networking
+                    </span>
 
-                    <span>↓</span>
+                    <span>
+                        8 Aug 2026
+                    </span>
 
-                    <div>API GATEWAY</div>
+                    <span>
+                        •
+                    </span>
 
-                    <span>↓</span>
-
-                    <div>AWS LAMBDA</div>
-
-                    <span>↓</span>
-
-                    <div>DYNAMODB</div>
+                    <span>
+                        10 min read
+                    </span>
 
                 </div>
+
+
+                <h2>
+                    How Does the Internet Actually Work?
+                </h2>
+
+
+                <p>
+                    Ever wondered what happens after you type a website
+                    address and press Enter? Explore DNS, IP addresses,
+                    routers, TCP/IP, HTTP, servers and the complete journey
+                    of a web request in simple language.
+                </p>
+
+
+                <a href="posts/internet-how-it-works.html"
+                   class="read-link">
+
+                    Read Article
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
 
             </div>
 
@@ -190,286 +894,409 @@
 </section>
 
 
-<!-- ================= LATEST ARTICLES ================= -->
+<!-- =========================================================
+     ARTICLES
+========================================================= -->
 
-<section class="articles-section">
+<section class="articles">
 
     <div class="container">
 
-        <div class="section-heading">
+        <div class="section-header">
 
-            <span>ARTICLES</span>
+            <div class="section-label">
+                Knowledge
+            </div>
 
-            <h2>
+            <h2 class="section-title">
                 Latest Articles
             </h2>
 
-            <p>
-                Explore practical articles and beginner-friendly
-                technical guides.
-            </p>
+        </div>
+
+
+        <div class="article-grid" id="articleGrid">
+
+
+            <!-- =================================================
+                 INTERNET ARTICLE
+            ================================================== -->
+
+            <article class="article-card"
+                     data-category="networking"
+                     data-title="How Does the Internet Actually Work">
+
+                <div class="article-top">
+                    <i class="fa-solid fa-globe"></i>
+                </div>
+
+                <div class="article-body">
+
+                    <div class="meta">
+
+                        <span class="tag">
+                            Networking
+                        </span>
+
+                        <span>
+                            10 min read
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        How Does the Internet Actually Work?
+                    </h3>
+
+                    <p>
+                        Understand DNS, IP addresses, routers, TCP/IP,
+                        HTTP, servers and what happens when you open
+                        a website.
+                    </p>
+
+                    <div class="article-footer">
+
+                        <a href="posts/internet-how-it-works.html"
+                           class="read-link">
+
+                            Read Article
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- =================================================
+                 AWS LAMBDA
+            ================================================== -->
+
+            <article class="article-card"
+                     data-category="aws"
+                     data-title="AWS Lambda Explained for Beginners">
+
+                <div class="article-top">
+                    <i class="fa-brands fa-aws"></i>
+                </div>
+
+                <div class="article-body">
+
+                    <div class="meta">
+
+                        <span class="tag">
+                            AWS
+                        </span>
+
+                        <span>
+                            6 min read
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        AWS Lambda Explained for Beginners
+                    </h3>
+
+                    <p>
+                        Learn serverless computing, Lambda functions,
+                        triggers, execution models and real-world
+                        use cases.
+                    </p>
+
+                    <div class="article-footer">
+
+                        <a href="posts/aws-lambda.html"
+                           class="read-link">
+
+                            Read Article
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- =================================================
+                 CLOUD
+            ================================================== -->
+
+            <article class="article-card"
+                     data-category="cloud"
+                     data-title="Cloud Computing Complete Beginners Guide">
+
+                <div class="article-top">
+                    <i class="fa-solid fa-cloud"></i>
+                </div>
+
+                <div class="article-body">
+
+                    <div class="meta">
+
+                        <span class="tag">
+                            Cloud
+                        </span>
+
+                        <span>
+                            7 min read
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        Cloud Computing: Complete Beginner's Guide
+                    </h3>
+
+                    <p>
+                        Understand IaaS, PaaS, SaaS, regions,
+                        availability zones, scalability and
+                        cloud fundamentals.
+                    </p>
+
+                    <div class="article-footer">
+
+                        <a href="#"
+                           class="read-link">
+
+                            Coming Soon
+                            <i class="fa-solid fa-clock"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- =================================================
+                 DEVOPS
+            ================================================== -->
+
+            <article class="article-card"
+                     data-category="devops"
+                     data-title="DevOps Roadmap for IT Beginners">
+
+                <div class="article-top">
+                    <i class="fa-solid fa-gears"></i>
+                </div>
+
+                <div class="article-body">
+
+                    <div class="meta">
+
+                        <span class="tag">
+                            DevOps
+                        </span>
+
+                        <span>
+                            8 min read
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        DevOps Roadmap for IT Beginners
+                    </h3>
+
+                    <p>
+                        A practical roadmap covering Linux, Git,
+                        Docker, Kubernetes, CI/CD and cloud
+                        technologies.
+                    </p>
+
+                    <div class="article-footer">
+
+                        <a href="#"
+                           class="read-link">
+
+                            Coming Soon
+                            <i class="fa-solid fa-clock"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- =================================================
+                 LINUX
+            ================================================== -->
+
+            <article class="article-card"
+                     data-category="linux"
+                     data-title="Linux Basics Every Cloud Engineer Should Know">
+
+                <div class="article-top">
+                    <i class="fa-brands fa-linux"></i>
+                </div>
+
+                <div class="article-body">
+
+                    <div class="meta">
+
+                        <span class="tag">
+                            Linux
+                        </span>
+
+                        <span>
+                            5 min read
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        Linux Basics Every Cloud Engineer Should Know
+                    </h3>
+
+                    <p>
+                        Learn essential Linux commands, file systems,
+                        permissions, processes and networking basics.
+                    </p>
+
+                    <div class="article-footer">
+
+                        <a href="#"
+                           class="read-link">
+
+                            Coming Soon
+                            <i class="fa-solid fa-clock"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- =================================================
+                 NETWORKING
+            ================================================== -->
+
+            <article class="article-card"
+                     data-category="networking"
+                     data-title="Networking Fundamentals for Cloud Engineers">
+
+                <div class="article-top">
+                    <i class="fa-solid fa-network-wired"></i>
+                </div>
+
+                <div class="article-body">
+
+                    <div class="meta">
+
+                        <span class="tag">
+                            Networking
+                        </span>
+
+                        <span>
+                            7 min read
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        Networking Fundamentals for Cloud Engineers
+                    </h3>
+
+                    <p>
+                        Understand IP addresses, DNS, TCP/IP, ports,
+                        routing, subnets and security groups.
+                    </p>
+
+                    <div class="article-footer">
+
+                        <a href="#"
+                           class="read-link">
+
+                            Coming Soon
+                            <i class="fa-solid fa-clock"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- =================================================
+                 CYBERSECURITY
+            ================================================== -->
+
+            <article class="article-card"
+                     data-category="security"
+                     data-title="Cybersecurity Fundamentals Every IT Beginner Should Learn">
+
+                <div class="article-top">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+
+                <div class="article-body">
+
+                    <div class="meta">
+
+                        <span class="tag">
+                            Security
+                        </span>
+
+                        <span>
+                            6 min read
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        Cybersecurity Fundamentals Every IT Beginner Should Learn
+                    </h3>
+
+                    <p>
+                        Explore the CIA triad, authentication,
+                        authorization, threats, vulnerabilities,
+                        IDS and SIEM.
+                    </p>
+
+                    <div class="article-footer">
+
+                        <a href="#"
+                           class="read-link">
+
+                            Coming Soon
+                            <i class="fa-solid fa-clock"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </article>
+
 
         </div>
 
 
-        <div class="articles-grid">
+        <div class="empty-state" id="emptyState">
 
+            <i class="fa-solid fa-magnifying-glass"></i>
 
-            <!-- AWS -->
-
-            <article class="article-card"
-                     data-category="aws">
-
-                <div class="card-top">
-
-                    <span class="article-tag">
-                        AWS
-                    </span>
-
-                    <span class="read-time">
-                        6 min read
-                    </span>
-
-                </div>
-
-                <h3>
-                    AWS Lambda Explained for Beginners
-                </h3>
-
-                <p>
-                    Understand AWS Lambda, serverless computing,
-                    functions, triggers, execution and real-world
-                    use cases.
-                </p>
-
-                <div class="card-bottom">
-
-                    <span>
-                        AWS
-                    </span>
-
-                    <a href="posts/aws-lambda.html">
-                        Read →
-                    </a>
-
-                </div>
-
-            </article>
-
-
-            <!-- CLOUD -->
-
-            <article class="article-card"
-                     data-category="cloud">
-
-                <div class="card-top">
-
-                    <span class="article-tag">
-                        CLOUD
-                    </span>
-
-                    <span class="read-time">
-                        7 min read
-                    </span>
-
-                </div>
-
-                <h3>
-                    Cloud Computing:
-                    Complete Beginner's Guide
-                </h3>
-
-                <p>
-                    Learn IaaS, PaaS, SaaS, regions,
-                    availability zones, scalability and
-                    cloud fundamentals.
-                </p>
-
-                <div class="card-bottom">
-
-                    <span>
-                        Cloud
-                    </span>
-
-                    <a href="posts/cloud-computing.html">
-                        Read →
-                    </a>
-
-                </div>
-
-            </article>
-
-
-            <!-- DEVOPS -->
-
-            <article class="article-card"
-                     data-category="devops">
-
-                <div class="card-top">
-
-                    <span class="article-tag">
-                        DEVOPS
-                    </span>
-
-                    <span class="read-time">
-                        8 min read
-                    </span>
-
-                </div>
-
-                <h3>
-                    DevOps Roadmap for IT Beginners
-                </h3>
-
-                <p>
-                    A practical roadmap covering Linux,
-                    Git, Docker, Kubernetes, CI/CD and
-                    cloud technologies.
-                </p>
-
-                <div class="card-bottom">
-
-                    <span>
-                        DevOps
-                    </span>
-
-                    <a href="posts/devops-roadmap.html">
-                        Read →
-                    </a>
-
-                </div>
-
-            </article>
-
-
-            <!-- LINUX -->
-
-            <article class="article-card"
-                     data-category="linux">
-
-                <div class="card-top">
-
-                    <span class="article-tag">
-                        LINUX
-                    </span>
-
-                    <span class="read-time">
-                        5 min read
-                    </span>
-
-                </div>
-
-                <h3>
-                    Linux Basics Every Cloud Engineer
-                    Should Know
-                </h3>
-
-                <p>
-                    Learn essential Linux commands,
-                    filesystems, permissions, processes
-                    and networking basics.
-                </p>
-
-                <div class="card-bottom">
-
-                    <span>
-                        Linux
-                    </span>
-
-                    <a href="posts/linux-basics.html">
-                        Read →
-                    </a>
-
-                </div>
-
-            </article>
-
-
-            <!-- NETWORKING -->
-
-            <article class="article-card"
-                     data-category="networking">
-
-                <div class="card-top">
-
-                    <span class="article-tag">
-                        NETWORKING
-                    </span>
-
-                    <span class="read-time">
-                        7 min read
-                    </span>
-
-                </div>
-
-                <h3>
-                    Networking Fundamentals
-                    for Cloud Engineers
-                </h3>
-
-                <p>
-                    Understand IP addresses, DNS,
-                    TCP/IP, ports, routing, subnets
-                    and security groups.
-                </p>
-
-                <div class="card-bottom">
-
-                    <span>
-                        Networking
-                    </span>
-
-                    <a href="posts/networking.html">
-                        Read →
-                    </a>
-
-                </div>
-
-            </article>
-
-
-            <!-- CYBERSECURITY -->
-
-            <article class="article-card"
-                     data-category="cybersecurity">
-
-                <div class="card-top">
-
-                    <span class="article-tag">
-                        SECURITY
-                    </span>
-
-                    <span class="read-time">
-                        6 min read
-                    </span>
-
-                </div>
-
-                <h3>
-                    Cybersecurity Fundamentals
-                    Every IT Beginner Should Learn
-                </h3>
-
-                <p>
-                    Explore the CIA triad, authentication,
-                    authorization, threats, vulnerabilities,
-                    IDS and SIEM.
-                </p>
-
-                <div class="card-bottom">
-
-                    <span>
-                        Cybersecurity
-                    </span>
-
-                    <a href="posts/cybersecurity.html">
-                        Read →
-                    </a>
-
-                </div>
-
-            </article>
-
+            <p>
+                No articles found. Try another search or category.
+            </p>
 
         </div>
 
@@ -478,76 +1305,316 @@
 </section>
 
 
-<!-- ================= CTA ================= -->
+<!-- =========================================================
+     NEWSLETTER / CTA
+========================================================= -->
 
-<section class="blog-cta">
+<section class="newsletter">
 
     <div class="container">
 
-        <span>
-            STAY UPDATED
-        </span>
+        <div class="newsletter-box">
 
-        <h2>
-            Learn something new every week.
-        </h2>
+            <div class="section-label">
+                Stay Curious
+            </div>
 
-        <p>
-            Follow my journey through Cloud, AWS,
-            DevOps, Networking and Cybersecurity.
-        </p>
+            <h2>
+                Learn something new every week.
+            </h2>
 
-        <a href="contact.html">
-            Connect With Me →
-        </a>
+            <p>
+                Follow my journey through technology, networking,
+                cybersecurity, AWS, DevOps and practical IT projects.
+            </p>
+
+        </div>
 
     </div>
 
 </section>
 
 
-<!-- ================= FOOTER ================= -->
+<!-- =========================================================
+     FOOTER
+========================================================= -->
 
 <footer>
 
-    <div class="container footer-container">
+    <div class="container">
 
-        <div>
+        <div class="footer-grid">
 
-            <a href="index.html" class="logo">
-                Suraj<span>.</span>
-            </a>
+            <div class="footer-brand">
 
-            <p>
-                Cloud & IT Enthusiast building
-                practical technology projects.
-            </p>
+                <h2>
+                    Suraj<span style="color:#60a5fa;">.</span>
+                </h2>
+
+                <p>
+                    Cloud & IT enthusiast building practical projects,
+                    learning modern technologies and sharing knowledge
+                    through technical articles.
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Navigation
+                </h4>
+
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="portfolio.html">Portfolio</a>
+                <a href="blog.html">Blog</a>
+                <a href="contact.html">Contact</a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Topics
+                </h4>
+
+                <a href="#"
+                   onclick="filterCategory('networking'); return false;">
+                    Networking
+                </a>
+
+                <a href="#"
+                   onclick="filterCategory('aws'); return false;">
+                    AWS
+                </a>
+
+                <a href="#"
+                   onclick="filterCategory('devops'); return false;">
+                    DevOps
+                </a>
+
+                <a href="#"
+                   onclick="filterCategory('linux'); return false;">
+                    Linux
+                </a>
+
+                <a href="#"
+                   onclick="filterCategory('security'); return false;">
+                    Cybersecurity
+                </a>
+
+            </div>
 
         </div>
 
 
-        <div class="footer-links">
+        <div class="copyright">
 
-            <a href="index.html">Home</a>
-            <a href="about.html">Portfolio</a>
-            <a href="blog.html">Blog</a>
-            <a href="contact.html">Contact</a>
+            © 2026 Suraj Pandey. All rights reserved.
 
         </div>
-
-    </div>
-
-
-    <div class="container copyright">
-
-        © 2026 Suraj Pandey.
-        All rights reserved.
 
     </div>
 
 </footer>
 
 
-<script src="blog.js"></script>
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+    const searchInput =
+        document.getElementById("searchInput");
+
+    const articleCards =
+        document.querySelectorAll(".article-card");
+
+    const filterButtons =
+        document.querySelectorAll(".filter-btn");
+
+    const emptyState =
+        document.getElementById("emptyState");
+
+    const menuToggle =
+        document.getElementById("menuToggle");
+
+    const navLinks =
+        document.getElementById("navLinks");
+
+
+    let currentCategory = "all";
+
+
+    /* =========================================================
+       MOBILE MENU
+    ========================================================= */
+
+    menuToggle.addEventListener("click", function () {
+
+        navLinks.classList.toggle("show");
+
+        const icon =
+            menuToggle.querySelector("i");
+
+        if (navLinks.classList.contains("show")) {
+
+            icon.classList.remove("fa-bars");
+            icon.classList.add("fa-xmark");
+
+        } else {
+
+            icon.classList.remove("fa-xmark");
+            icon.classList.add("fa-bars");
+
+        }
+
+    });
+
+
+    /* =========================================================
+       FILTER FUNCTION
+    ========================================================= */
+
+    function filterArticles() {
+
+        const searchTerm =
+            searchInput.value
+                .toLowerCase()
+                .trim();
+
+        let visibleCount = 0;
+
+
+        articleCards.forEach(function (card) {
+
+            const category =
+                card.dataset.category;
+
+            const title =
+                card.dataset.title.toLowerCase();
+
+            const text =
+                card.innerText.toLowerCase();
+
+
+            const categoryMatch =
+                currentCategory === "all" ||
+                category === currentCategory;
+
+
+            const searchMatch =
+                title.includes(searchTerm) ||
+                text.includes(searchTerm);
+
+
+            if (categoryMatch && searchMatch) {
+
+                card.style.display = "flex";
+                visibleCount++;
+
+            } else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+
+        if (visibleCount === 0) {
+
+            emptyState.style.display = "block";
+
+        } else {
+
+            emptyState.style.display = "none";
+
+        }
+
+    }
+
+
+    /* =========================================================
+       CATEGORY BUTTONS
+    ========================================================= */
+
+    filterButtons.forEach(function (button) {
+
+        button.addEventListener("click", function () {
+
+            filterButtons.forEach(function (btn) {
+
+                btn.classList.remove("active");
+
+            });
+
+
+            button.classList.add("active");
+
+
+            currentCategory =
+                button.dataset.filter;
+
+
+            filterArticles();
+
+        });
+
+    });
+
+
+    /* =========================================================
+       SEARCH
+    ========================================================= */
+
+    searchInput.addEventListener(
+        "input",
+        filterArticles
+    );
+
+
+    /* =========================================================
+       FOOTER CATEGORY FILTER
+    ========================================================= */
+
+    function filterCategory(category) {
+
+        currentCategory = category;
+
+
+        filterButtons.forEach(function (button) {
+
+            button.classList.remove("active");
+
+            if (button.dataset.filter === category) {
+
+                button.classList.add("active");
+
+            }
+
+        });
+
+
+        filterArticles();
+
+
+        window.scrollTo({
+
+            top: document.querySelector(".articles").offsetTop - 80,
+
+            behavior: "smooth"
+
+        });
+
+    }
+
+</script>
 
 </body>
+</html>
+```

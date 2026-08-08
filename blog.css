@@ -3,7 +3,7 @@
    SURAj PORTFOLIO — PROFESSIONAL BLOG
    ========================================================= */
 
-* {
+* 
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -13,7 +13,7 @@ html {
     scroll-behavior: smooth;
 }
 
-body {
+body 
     font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
         Roboto, Arial, sans-serif;
     background: #0b1120;

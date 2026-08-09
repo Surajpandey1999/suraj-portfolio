@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deep Learning Fundamentals: Neural Networks Demystified | Suraj Pandey</title>
+<meta name="description" content="Neurons, layers, weights, backpropagation and gradient descent — made visual and intuitive.">
+<style>
+* { box-sizing: border-box; }
+body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; background:#0b1120; color:#e5e7eb; line-height:1.75; }
+a { color:inherit; text-decoration:none; }
+.container { width:min(1000px,92%); margin:0 auto; }
+.blog-header { border-bottom:1px solid rgba(148,163,184,0.14); background:rgba(11,17,32,0.9); position:sticky; top:0; z-index:10; backdrop-filter:blur(10px); }
+.nav-container { display:flex; align-items:center; justify-content:space-between; min-height:68px; flex-wrap:wrap; gap:10px; }
+.logo { font-size:1.4rem; font-weight:800; color:#fff; }
+.logo span { color:#34d399; }
+.blog-header nav a { margin-left:18px; font-size:0.92rem; font-weight:600; color:#9ca3af; }
+.blog-header nav a:hover { color:#fff; }
+.article-hero { padding:55px 0 25px; }
+.article-category { display:inline-block; font-size:0.78rem; font-weight:700; letter-spacing:1.5px; color:#6ee7b7; background:rgba(52,211,153,0.12); border:1px solid rgba(52,211,153,0.3); padding:5px 12px; border-radius:20px; margin-bottom:18px; }
+.article-hero h1 { font-size:clamp(2rem,5vw,2.9rem); line-height:1.15; margin:0 0 18px; color:#fff; letter-spacing:-0.5px; }
+.article-intro { font-size:1.1rem; color:#cbd5e1; max-width:720px; margin:0 0 22px; }
+.article-meta { font-size:0.9rem; color:#6b7280; display:flex; gap:10px; flex-wrap:wrap; }
+.article-content { padding:20px 0 70px; }
+.article-layout { display:grid; grid-template-columns:1fr 260px; gap:50px; align-items:start; }
+@media (max-width:820px) { .article-layout { grid-template-columns:1fr; } }
+article h2 { font-size:1.6rem; color:#fff; margin:46px 0 16px; padding-top:10px; border-top:1px solid rgba(148,163,184,0.12); }
+article h2:first-of-type { border-top:none; margin-top:0; }
+article h3 { font-size:1.2rem; color:#f3f4f6; margin:26px 0 10px; }
+article p { color:#cbd5e1; margin:0 0 16px; }
+article ul { color:#cbd5e1; padding-left:22px; margin-bottom:16px; }
+article li { margin-bottom:8px; }
+.diagram-box { background:linear-gradient(180deg,#111a2e,#0c1424); border:1px solid rgba(148,163,184,0.16); border-radius:16px; padding:22px 14px; margin:22px 0 30px; box-shadow:0 20px 40px -20px rgba(0,0,0,0.6); overflow-x:auto; }
+.diagram-caption { text-align:center; font-size:0.85rem; color:#6b7280; margin-top:10px; }
+.article-sidebar { position:sticky; top:90px; display:flex; flex-direction:column; gap:16px; }
+.sidebar-card { background:#111a2e; border:1px solid rgba(148,163,184,0.14); border-radius:12px; padding:18px; }
+.sidebar-card h3 { margin:0 0 12px; font-size:0.9rem; color:#9ca3af; text-transform:uppercase; letter-spacing:1px; }
+.sidebar-card a { display:block; padding:6px 0; font-size:0.92rem; color:#cbd5e1; }
+.sidebar-card a:hover { color:#6ee7b7; }
+.sidebar-card span { display:inline-block; background:rgba(148,163,184,0.12); padding:4px 10px; border-radius:20px; font-size:0.78rem; margin:3px 4px 0 0; color:#cbd5e1; }
+footer { border-top:1px solid rgba(148,163,184,0.14); padding:40px 0; }
+footer h3 { color:#fff; margin:0 0 8px; }
+footer p { color:#6b7280; margin:0 0 18px; font-size:0.9rem; }
+.footer-links a { margin-right:18px; font-size:0.9rem; color:#9ca3af; }
+.footer-links a:hover { color:#fff; }
+.copyright { margin-top:18px; font-size:0.8rem; color:#4b5563; }
+</style>
+</head>
+<body>
+<header class="blog-header">
+<div class="container nav-container">
+<a href="../index.html" class="logo">Suraj<span>.</span></a>
+<nav>
+<a href="../index.html">Home</a>
+<a href="../about.html">About</a>
+<a href="../portfolio.html">Portfolio</a>
+<a href="../blog.html">Blog</a>
+<a href="../contact.html">Contact</a>
+</nav>
+</div>
+</header>
+
+<main>
+<section class="article-hero">
+<div class="container">
+<div class="article-category">DEEP LEARNING • FUNDAMENTALS</div>
+<h1>Deep Learning Fundamentals: Neural Networks Demystified</h1>
+<p class="article-intro">Neurons, layers, weights, backpropagation and gradient descent — the math made visual and intuitive.</p>
+<div class="article-meta"><span>By Suraj Pandey</span><span>•</span><span>9 August 2026</span><span>•</span><span>9 min read</span></div>
+</div>
+</section>
+
+<section class="article-content">
+<div class="container article-layout">
+<article>
+
+<h2>What is a Neural Network?</h2>
+<p>
+A neural network is loosely inspired by the brain — many simple
+units ("neurons") connected together, each doing a tiny bit of math,
+that combine to learn complex patterns from data.
+</p>
+
+<h2>The Structure: Layers of Neurons</h2>
+<div class="diagram-box">
+<svg viewBox="0 0 620 260" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<radialGradient id="nn1"><stop offset="0" stop-color="#6ee7b7"/><stop offset="1" stop-color="#16a34a"/></radialGradient>
+<filter id="nns" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#000" flood-opacity="0.4"/></filter>
+</defs>
+<g stroke="#334155" stroke-width="1">
+<!-- connections input->hidden -->
+<line x1="60" y1="60" x2="260" y2="40"/><line x1="60" y1="60" x2="260" y2="100"/><line x1="60" y1="60" x2="260" y2="160"/><line x1="60" y1="60" x2="260" y2="220"/>
+<line x1="60" y1="130" x2="260" y2="40"/><line x1="60" y1="130" x2="260" y2="100"/><line x1="60" y1="130" x2="260" y2="160"/><line x1="60" y1="130" x2="260" y2="220"/>
+<line x1="60" y1="200" x2="260" y2="40"/><line x1="60" y1="200" x2="260" y2="100"/><line x1="60" y1="200" x2="260" y2="160"/><line x1="60" y1="200" x2="260" y2="220"/>
+<!-- hidden -> hidden2 -->
+<line x1="260" y1="40" x2="440" y2="80"/><line x1="260" y1="40" x2="440" y2="180"/>
+<line x1="260" y1="100" x2="440" y2="80"/><line x1="260" y1="100" x2="440" y2="180"/>
+<line x1="260" y1="160" x2="440" y2="80"/><line x1="260" y1="160" x2="440" y2="180"/>
+<line x1="260" y1="220" x2="440" y2="80"/><line x1="260" y1="220" x2="440" y2="180"/>
+<!-- hidden2 -> output -->
+<line x1="440" y1="80" x2="580" y2="130"/><line x1="440" y1="180" x2="580" y2="130"/>
+</g>
+<g fill="url(#nn1)" filter="url(#nns)">
+<circle cx="60" cy="60" r="16"/><circle cx="60" cy="130" r="16"/><circle cx="60" cy="200" r="16"/>
+<circle cx="260" cy="40" r="14"/><circle cx="260" cy="100" r="14"/><circle cx="260" cy="160" r="14"/><circle cx="260" cy="220" r="14"/>
+<circle cx="440" cy="80" r="14"/><circle cx="440" cy="180" r="14"/>
+<circle cx="580" cy="130" r="18"/>
+</g>
+<g font-size="11" fill="#9ca3af" text-anchor="middle" font-weight="700">
+<text x="60" y="245">Input Layer</text>
+<text x="260" y="248">Hidden Layer 1</text>
+<text x="440" y="215">Hidden Layer 2</text>
+<text x="580" y="165">Output</text>
+</g>
+</svg>
+<p class="diagram-caption">Data flows left to right — each connection has a "weight" that gets adjusted during training.</p>
+</div>
+
+<h2>Neurons and Weights</h2>
+<p>
+Each connection between neurons has a <strong>weight</strong> — a
+number representing how important that connection is. A neuron
+multiplies its inputs by their weights, adds them up, and passes the
+result through an <strong>activation function</strong> that decides
+how strongly to "fire."
+</p>
+
+<h2>Training: Forward Pass</h2>
+<p>
+Input data flows through the network layer by layer, producing a
+prediction at the output. Initially, since weights start random, this
+prediction is basically a guess.
+</p>
+
+<h2>Training: Loss and Backpropagation</h2>
+<p>
+The network compares its prediction to the correct answer using a
+<strong>loss function</strong> — a number representing how wrong it
+was. <strong>Backpropagation</strong> then works backward through the
+network, calculating exactly how much each individual weight
+contributed to that error.
+</p>
+
+<h2>Gradient Descent</h2>
+<p>
+Using those error contributions, <strong>gradient descent</strong>
+nudges every weight slightly in the direction that reduces the error.
+Repeat this over millions of examples, and the network gradually
+learns the right weights to make accurate predictions.
+</p>
+
+<h2>Why "Deep" Learning?</h2>
+<p>
+"Deep" simply means many hidden layers stacked together. More layers
+let the network learn increasingly abstract patterns — early layers
+might detect simple features, later layers combine them into complex
+concepts.
+</p>
+
+<h2>Conclusion</h2>
+<p>
+Every modern AI system — from image recognition to LLMs — is built on
+this same core loop: forward pass, measure error, backpropagate,
+adjust weights, repeat. Understanding this loop is the foundation for
+understanding all of deep learning.
+</p>
+
+</article>
+
+<aside class="article-sidebar">
+<div class="sidebar-card">
+<h3>In this article</h3>
+<a href="#top">What is a Neural Network</a>
+<a href="#top">Layers</a>
+<a href="#top">Weights</a>
+<a href="#top">Forward Pass</a>
+<a href="#top">Backpropagation</a>
+<a href="#top">Gradient Descent</a>
+</div>
+<div class="sidebar-card">
+<h3>Topics</h3>
+<span>Deep Learning</span><span>Neural Networks</span><span>AI</span>
+</div>
+</aside>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="container">
+<h3>Suraj.</h3>
+<p>Cloud & IT Enthusiast building practical technology projects.</p>
+<div class="footer-links">
+<a href="../index.html">Home</a>
+<a href="../portfolio.html">Portfolio</a>
+<a href="../blog.html">Blog</a>
+<a href="../contact.html">Contact</a>
+</div>
+<p class="copyright">© 2026 Suraj Pandey. All rights reserved.</p>
+</div>
+</footer>
+</body>
+</html>

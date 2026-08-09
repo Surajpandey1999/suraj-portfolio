@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic AI: How AI Agents Plan, Reason and Act | Suraj Pandey</title>
+<meta name="description" content="Tool use, memory and multi-step reasoning loops — what makes an AI agent different from a chatbot.">
+<style>
+* { box-sizing: border-box; }
+body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; background:#0b1120; color:#e5e7eb; line-height:1.75; }
+a { color:inherit; text-decoration:none; }
+.container { width:min(1000px,92%); margin:0 auto; }
+.blog-header { border-bottom:1px solid rgba(148,163,184,0.14); background:rgba(11,17,32,0.9); position:sticky; top:0; z-index:10; backdrop-filter:blur(10px); }
+.nav-container { display:flex; align-items:center; justify-content:space-between; min-height:68px; flex-wrap:wrap; gap:10px; }
+.logo { font-size:1.4rem; font-weight:800; color:#fff; }
+.logo span { color:#fbbf24; }
+.blog-header nav a { margin-left:18px; font-size:0.92rem; font-weight:600; color:#9ca3af; }
+.blog-header nav a:hover { color:#fff; }
+.article-hero { padding:55px 0 25px; }
+.article-category { display:inline-block; font-size:0.78rem; font-weight:700; letter-spacing:1.5px; color:#fcd34d; background:rgba(251,191,36,0.12); border:1px solid rgba(251,191,36,0.3); padding:5px 12px; border-radius:20px; margin-bottom:18px; }
+.article-hero h1 { font-size:clamp(2rem,5vw,2.9rem); line-height:1.15; margin:0 0 18px; color:#fff; letter-spacing:-0.5px; }
+.article-intro { font-size:1.1rem; color:#cbd5e1; max-width:720px; margin:0 0 22px; }
+.article-meta { font-size:0.9rem; color:#6b7280; display:flex; gap:10px; flex-wrap:wrap; }
+.article-content { padding:20px 0 70px; }
+.article-layout { display:grid; grid-template-columns:1fr 260px; gap:50px; align-items:start; }
+@media (max-width:820px) { .article-layout { grid-template-columns:1fr; } }
+article h2 { font-size:1.6rem; color:#fff; margin:46px 0 16px; padding-top:10px; border-top:1px solid rgba(148,163,184,0.12); }
+article h2:first-of-type { border-top:none; margin-top:0; }
+article h3 { font-size:1.2rem; color:#f3f4f6; margin:26px 0 10px; }
+article p { color:#cbd5e1; margin:0 0 16px; }
+article ul { color:#cbd5e1; padding-left:22px; margin-bottom:16px; }
+article li { margin-bottom:8px; }
+.diagram-box { background:linear-gradient(180deg,#111a2e,#0c1424); border:1px solid rgba(148,163,184,0.16); border-radius:16px; padding:22px 14px; margin:22px 0 30px; box-shadow:0 20px 40px -20px rgba(0,0,0,0.6); overflow-x:auto; }
+.diagram-caption { text-align:center; font-size:0.85rem; color:#6b7280; margin-top:10px; }
+.article-sidebar { position:sticky; top:90px; display:flex; flex-direction:column; gap:16px; }
+.sidebar-card { background:#111a2e; border:1px solid rgba(148,163,184,0.14); border-radius:12px; padding:18px; }
+.sidebar-card h3 { margin:0 0 12px; font-size:0.9rem; color:#9ca3af; text-transform:uppercase; letter-spacing:1px; }
+.sidebar-card a { display:block; padding:6px 0; font-size:0.92rem; color:#cbd5e1; }
+.sidebar-card a:hover { color:#fcd34d; }
+.sidebar-card span { display:inline-block; background:rgba(148,163,184,0.12); padding:4px 10px; border-radius:20px; font-size:0.78rem; margin:3px 4px 0 0; color:#cbd5e1; }
+footer { border-top:1px solid rgba(148,163,184,0.14); padding:40px 0; }
+footer h3 { color:#fff; margin:0 0 8px; }
+footer p { color:#6b7280; margin:0 0 18px; font-size:0.9rem; }
+.footer-links a { margin-right:18px; font-size:0.9rem; color:#9ca3af; }
+.footer-links a:hover { color:#fff; }
+.copyright { margin-top:18px; font-size:0.8rem; color:#4b5563; }
+</style>
+</head>
+<body>
+<header class="blog-header">
+<div class="container nav-container">
+<a href="../index.html" class="logo">Suraj<span>.</span></a>
+<nav>
+<a href="../index.html">Home</a>
+<a href="../about.html">About</a>
+<a href="../portfolio.html">Portfolio</a>
+<a href="../blog.html">Blog</a>
+<a href="../contact.html">Contact</a>
+</nav>
+</div>
+</header>
+
+<main>
+<section class="article-hero">
+<div class="container">
+<div class="article-category">AGENTIC AI</div>
+<h1>Agentic AI: How AI Agents Plan, Reason and Act</h1>
+<p class="article-intro">Tool use, memory and multi-step reasoning loops — what makes an "agent" different from a chatbot.</p>
+<div class="article-meta"><span>By Suraj Pandey</span><span>•</span><span>9 August 2026</span><span>•</span><span>8 min read</span></div>
+</div>
+</section>
+
+<section class="article-content">
+<div class="container article-layout">
+<article>
+
+<h2>Chatbot vs Agent</h2>
+<p>
+A regular chatbot takes one input, generates one response, and stops
+— it can't take real actions. An <strong>AI agent</strong> can plan
+multiple steps, use tools (search the web, run code, call APIs), look
+at the results, and decide what to do next — repeating this loop
+until the task is actually done.
+</p>
+
+<h2>The Agent Loop</h2>
+<div class="diagram-box">
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="ag1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1e293b"/><stop offset="1" stop-color="#0f172a"/></linearGradient>
+<linearGradient id="agAmber" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fcd34d"/><stop offset="1" stop-color="#f59e0b"/></linearGradient>
+<filter id="ags" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#000" flood-opacity="0.45"/></filter>
+<marker id="aga" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#fcd34d"/></marker>
+</defs>
+<g font-size="12" text-anchor="middle" font-weight="700">
+<rect x="175" y="10" width="150" height="70" rx="14" fill="url(#agAmber)" filter="url(#ags)"/>
+<text x="250" y="40" font-size="20" fill="#3d2c00">🎯</text><text x="250" y="62" fill="#3d2c00">Goal</text>
+
+<line x1="325" y1="45" x2="400" y2="130" stroke="#fcd34d" stroke-width="2" marker-end="url(#aga)"/>
+
+<rect x="370" y="140" width="120" height="70" rx="14" fill="url(#ag1)" stroke="#334155" filter="url(#ags)"/>
+<text x="430" y="170" font-size="18" fill="#e5e7eb">🧠</text><text x="430" y="192" fill="#cbd5e1" font-size="11">Plan / Think</text>
+
+<line x1="430" y1="210" x2="370" y2="280" stroke="#fcd34d" stroke-width="2" marker-end="url(#aga)"/>
+
+<rect x="300" y="290" width="120" height="70" rx="14" fill="url(#ag1)" stroke="#334155" filter="url(#ags)"/>
+<text x="360" y="320" font-size="18" fill="#e5e7eb">🛠️</text><text x="360" y="342" fill="#cbd5e1" font-size="11">Use a Tool</text>
+
+<line x1="300" y1="335" x2="220" y2="335" stroke="#fcd34d" stroke-width="2" marker-end="url(#aga)"/>
+
+<rect x="80" y="290" width="120" height="70" rx="14" fill="url(#ag1)" stroke="#334155" filter="url(#ags)"/>
+<text x="140" y="320" font-size="18" fill="#e5e7eb">👀</text><text x="140" y="342" fill="#cbd5e1" font-size="11">Observe Result</text>
+
+<line x1="120" y1="290" x2="180" y2="220" stroke="#fcd34d" stroke-width="2" marker-end="url(#aga)"/>
+
+<rect x="10" y="140" width="140" height="70" rx="14" fill="url(#ag1)" stroke="#334155" filter="url(#ags)"/>
+<text x="80" y="170" font-size="18" fill="#e5e7eb">🔁</text><text x="80" y="192" fill="#cbd5e1" font-size="10">Loop until done</text>
+
+<line x1="150" y1="150" x2="190" y2="60" stroke="#fcd34d" stroke-width="2" marker-end="url(#aga)" stroke-dasharray="4 4"/>
+
+<rect x="180" y="400" width="150" height="70" rx="14" fill="url(#agAmber)" filter="url(#ags)"/>
+<text x="255" y="430" font-size="18" fill="#3d2c00">✅</text><text x="255" y="452" fill="#3d2c00">Task Complete</text>
+
+<line x1="220" y1="360" x2="230" y2="400" stroke="#4ade80" stroke-width="2" marker-end="url(#aga)"/>
+</g>
+</svg>
+<p class="diagram-caption">Plan → use a tool → observe the result → loop back and re-plan — until the goal is achieved.</p>
+</div>
+
+<h2>Tool Use</h2>
+<p>
+Instead of only generating text, agents can call real tools —
+searching the web, running code, querying a database, sending an
+email — and use the results to inform their next step. This is what
+lets an agent actually accomplish tasks, not just describe them.
+</p>
+
+<h2>Memory</h2>
+<p>
+Agents keep track of what's happened so far in a task — previous tool
+results, decisions made, information gathered — so each step builds
+on the last instead of starting from scratch.
+</p>
+
+<h2>Multi-Step Reasoning</h2>
+<p>
+Complex tasks get broken into smaller steps automatically. For
+example, "research this topic and write a summary" might become:
+search → read top results → extract key points → write summary —
+all handled by the agent without explicit step-by-step instructions.
+</p>
+
+<h2>Why This Matters</h2>
+<ul>
+<li>Agents can complete multi-step real-world tasks, not just answer questions</li>
+<li>They adapt their plan based on what they discover along the way</li>
+<li>This is the direction most GenAI products are heading — from chatbots to task-completing assistants</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>
+Agentic AI is what turns an LLM from "a very good text predictor"
+into something that can actually get work done — by planning,
+using tools, observing results, and looping until the goal is
+reached.
+</p>
+
+</article>
+
+<aside class="article-sidebar">
+<div class="sidebar-card">
+<h3>In this article</h3>
+<a href="#top">Chatbot vs Agent</a>
+<a href="#top">The Agent Loop</a>
+<a href="#top">Tool Use</a>
+<a href="#top">Memory</a>
+<a href="#top">Multi-Step Reasoning</a>
+</div>
+<div class="sidebar-card">
+<h3>Topics</h3>
+<span>Agentic AI</span><span>LLM</span><span>Automation</span>
+</div>
+</aside>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="container">
+<h3>Suraj.</h3>
+<p>Cloud & IT Enthusiast building practical technology projects.</p>
+<div class="footer-links">
+<a href="../index.html">Home</a>
+<a href="../portfolio.html">Portfolio</a>
+<a href="../blog.html">Blog</a>
+<a href="../contact.html">Contact</a>
+</div>
+<p class="copyright">© 2026 Suraj Pandey. All rights reserved.</p>
+</div>
+</footer>
+</body>
+</html>

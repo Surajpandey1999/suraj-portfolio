@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAG: Retrieval-Augmented Generation Explained | Suraj Pandey</title>
+<meta name="description" content="Why LLMs hallucinate, and how RAG connects them to your own data — with a real architecture diagram.">
+<style>
+* { box-sizing: border-box; }
+body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; background:#0b1120; color:#e5e7eb; line-height:1.75; }
+a { color:inherit; text-decoration:none; }
+.container { width:min(1000px,92%); margin:0 auto; }
+.blog-header { border-bottom:1px solid rgba(148,163,184,0.14); background:rgba(11,17,32,0.9); position:sticky; top:0; z-index:10; backdrop-filter:blur(10px); }
+.nav-container { display:flex; align-items:center; justify-content:space-between; min-height:68px; flex-wrap:wrap; gap:10px; }
+.logo { font-size:1.4rem; font-weight:800; color:#fff; }
+.logo span { color:#f472b6; }
+.blog-header nav a { margin-left:18px; font-size:0.92rem; font-weight:600; color:#9ca3af; }
+.blog-header nav a:hover { color:#fff; }
+.article-hero { padding:55px 0 25px; }
+.article-category { display:inline-block; font-size:0.78rem; font-weight:700; letter-spacing:1.5px; color:#f9a8d4; background:rgba(244,114,182,0.12); border:1px solid rgba(244,114,182,0.3); padding:5px 12px; border-radius:20px; margin-bottom:18px; }
+.article-hero h1 { font-size:clamp(2rem,5vw,2.9rem); line-height:1.15; margin:0 0 18px; color:#fff; letter-spacing:-0.5px; }
+.article-intro { font-size:1.1rem; color:#cbd5e1; max-width:720px; margin:0 0 22px; }
+.article-meta { font-size:0.9rem; color:#6b7280; display:flex; gap:10px; flex-wrap:wrap; }
+.article-content { padding:20px 0 70px; }
+.article-layout { display:grid; grid-template-columns:1fr 260px; gap:50px; align-items:start; }
+@media (max-width:820px) { .article-layout { grid-template-columns:1fr; } }
+article h2 { font-size:1.6rem; color:#fff; margin:46px 0 16px; padding-top:10px; border-top:1px solid rgba(148,163,184,0.12); }
+article h2:first-of-type { border-top:none; margin-top:0; }
+article h3 { font-size:1.2rem; color:#f3f4f6; margin:26px 0 10px; }
+article p { color:#cbd5e1; margin:0 0 16px; }
+article ul { color:#cbd5e1; padding-left:22px; margin-bottom:16px; }
+article li { margin-bottom:8px; }
+.diagram-box { background:linear-gradient(180deg,#111a2e,#0c1424); border:1px solid rgba(148,163,184,0.16); border-radius:16px; padding:22px 14px; margin:22px 0 30px; box-shadow:0 20px 40px -20px rgba(0,0,0,0.6); overflow-x:auto; }
+.diagram-caption { text-align:center; font-size:0.85rem; color:#6b7280; margin-top:10px; }
+.article-sidebar { position:sticky; top:90px; display:flex; flex-direction:column; gap:16px; }
+.sidebar-card { background:#111a2e; border:1px solid rgba(148,163,184,0.14); border-radius:12px; padding:18px; }
+.sidebar-card h3 { margin:0 0 12px; font-size:0.9rem; color:#9ca3af; text-transform:uppercase; letter-spacing:1px; }
+.sidebar-card a { display:block; padding:6px 0; font-size:0.92rem; color:#cbd5e1; }
+.sidebar-card a:hover { color:#f9a8d4; }
+.sidebar-card span { display:inline-block; background:rgba(148,163,184,0.12); padding:4px 10px; border-radius:20px; font-size:0.78rem; margin:3px 4px 0 0; color:#cbd5e1; }
+footer { border-top:1px solid rgba(148,163,184,0.14); padding:40px 0; }
+footer h3 { color:#fff; margin:0 0 8px; }
+footer p { color:#6b7280; margin:0 0 18px; font-size:0.9rem; }
+.footer-links a { margin-right:18px; font-size:0.9rem; color:#9ca3af; }
+.footer-links a:hover { color:#fff; }
+.copyright { margin-top:18px; font-size:0.8rem; color:#4b5563; }
+</style>
+</head>
+<body>
+<header class="blog-header">
+<div class="container nav-container">
+<a href="../index.html" class="logo">Suraj<span>.</span></a>
+<nav>
+<a href="../index.html">Home</a>
+<a href="../about.html">About</a>
+<a href="../portfolio.html">Portfolio</a>
+<a href="../blog.html">Blog</a>
+<a href="../contact.html">Contact</a>
+</nav>
+</div>
+</header>
+
+<main>
+<section class="article-hero">
+<div class="container">
+<div class="article-category">GENAI • RAG</div>
+<h1>RAG: Retrieval-Augmented Generation Explained</h1>
+<p class="article-intro">Why LLMs hallucinate, and how connecting them to your own data with RAG fixes it — with a real architecture diagram.</p>
+<div class="article-meta"><span>By Suraj Pandey</span><span>•</span><span>9 August 2026</span><span>•</span><span>7 min read</span></div>
+</div>
+</section>
+
+<section class="article-content">
+<div class="container article-layout">
+<article>
+
+<h2>The Problem: LLMs Don't Know Your Data</h2>
+<p>
+An LLM only knows what it learned during training — it has no idea
+about your company's internal documents, yesterday's news, or
+anything created after its training cutoff. When asked, it often
+guesses confidently and gets it wrong. This is called
+<strong>hallucination</strong>.
+</p>
+
+<h2>The Fix: Retrieval-Augmented Generation</h2>
+<p>
+RAG solves this by retrieving relevant information from your own
+data <strong>before</strong> the model generates an answer, and
+feeding that information into the prompt as context — so the model
+answers from real, current facts instead of guessing.
+</p>
+
+<div class="diagram-box">
+<svg viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="rg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1e293b"/><stop offset="1" stop-color="#0f172a"/></linearGradient>
+<linearGradient id="rgPink" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f9a8d4"/><stop offset="1" stop-color="#ec4899"/></linearGradient>
+<linearGradient id="rgGreen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4ade80"/><stop offset="1" stop-color="#16a34a"/></linearGradient>
+<filter id="rgs" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.45"/></filter>
+<marker id="rga" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#f9a8d4"/></marker>
+</defs>
+<g font-size="11" text-anchor="middle" font-weight="700">
+<rect x="0" y="90" width="110" height="80" rx="14" fill="url(#rg1)" stroke="#334155" filter="url(#rgs)"/>
+<text x="55" y="122" font-size="20" fill="#e5e7eb">🙋</text><text x="55" y="145" fill="#cbd5e1">Question</text>
+
+<line x1="110" y1="130" x2="150" y2="130" stroke="#f9a8d4" stroke-width="2" marker-end="url(#rga)"/>
+
+<rect x="155" y="90" width="130" height="80" rx="14" fill="url(#rgPink)" filter="url(#rgs)"/>
+<text x="220" y="122" font-size="20" fill="#3d0a26">🔍</text><text x="220" y="145" fill="#3d0a26">Search</text><text x="220" y="159" font-size="9" fill="#5c1237" font-weight="400">Vector DB</text>
+
+<line x1="285" y1="130" x2="325" y2="130" stroke="#f9a8d4" stroke-width="2" marker-end="url(#rga)"/>
+
+<rect x="330" y="90" width="130" height="80" rx="14" fill="url(#rg1)" stroke="#334155" filter="url(#rgs)"/>
+<text x="395" y="122" font-size="20" fill="#e5e7eb">📄</text><text x="395" y="145" fill="#cbd5e1">Relevant</text><text x="395" y="159" font-size="9" fill="#6b7280" font-weight="400">Documents</text>
+
+<line x1="460" y1="130" x2="500" y2="130" stroke="#f9a8d4" stroke-width="2" marker-end="url(#rga)"/>
+
+<rect x="505" y="90" width="120" height="80" rx="14" fill="url(#rg1)" stroke="#334155" filter="url(#rgs)"/>
+<text x="565" y="122" font-size="20" fill="#e5e7eb">🧠</text><text x="565" y="145" fill="#cbd5e1">LLM</text><text x="565" y="159" font-size="9" fill="#6b7280" font-weight="400">+ context</text>
+
+<line x1="565" y1="170" x2="565" y2="205" stroke="#f9a8d4" stroke-width="2" marker-end="url(#rga)"/>
+
+<rect x="470" y="210" width="190" height="40" rx="10" fill="url(#rgGreen)" filter="url(#rgs)"/>
+<text x="565" y="235" font-size="12" fill="#052e16" font-weight="800">✅ Accurate Answer</text>
+</g>
+</svg>
+<p class="diagram-caption">The model's answer is grounded in your real documents — not just what it memorized during training.</p>
+</div>
+
+<h2>How the "Search" Step Works</h2>
+<p>
+Your documents are broken into chunks and converted into
+<strong>embeddings</strong> — numeric representations of meaning —
+stored in a vector database. When a question comes in, it's also
+converted to an embedding, and the database finds the most
+semantically similar chunks, not just keyword matches.
+</p>
+
+<h2>Why RAG Matters</h2>
+<ul>
+<li>Answers stay grounded in real, current data</li>
+<li>No need to retrain the model when your data changes</li>
+<li>Works with private/internal documents the model never saw during training</li>
+<li>Cheaper than fine-tuning for most use cases</li>
+</ul>
+
+<h2>Common Use Cases</h2>
+<ul>
+<li>Customer support chatbots answering from a company's documentation</li>
+<li>Internal knowledge assistants searching company wikis</li>
+<li>Legal/medical tools referencing specific case documents</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>
+RAG is one of the most practical techniques in applied GenAI — it
+turns a general-purpose LLM into a system that can answer accurately
+about your specific, current data without expensive retraining.
+</p>
+
+</article>
+
+<aside class="article-sidebar">
+<div class="sidebar-card">
+<h3>In this article</h3>
+<a href="#top">The Problem</a>
+<a href="#top">The Fix: RAG</a>
+<a href="#top">How Search Works</a>
+<a href="#top">Why It Matters</a>
+<a href="#top">Use Cases</a>
+</div>
+<div class="sidebar-card">
+<h3>Topics</h3>
+<span>RAG</span><span>GenAI</span><span>LLM</span>
+</div>
+</aside>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="container">
+<h3>Suraj.</h3>
+<p>Cloud & IT Enthusiast building practical technology projects.</p>
+<div class="footer-links">
+<a href="../index.html">Home</a>
+<a href="../portfolio.html">Portfolio</a>
+<a href="../blog.html">Blog</a>
+<a href="../contact.html">Contact</a>
+</div>
+<p class="copyright">© 2026 Suraj Pandey. All rights reserved.</p>
+</div>
+</footer>
+</body>
+</html>

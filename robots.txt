@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://surajpandey1999.github.io/suraj-portfolio/sitemap.xml

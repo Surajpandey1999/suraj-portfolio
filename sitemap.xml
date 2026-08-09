@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://surajpandey1999.github.io/suraj-portfolio/</loc><priority>1.0</priority></url>
+  <url><loc>https://surajpandey1999.github.io/suraj-portfolio/about.html</loc><priority>0.8</priority></url>
+  <url><loc>https://surajpandey1999.github.io/suraj-portfolio/services.html</loc><priority>0.8</priority></url>
+  <url><loc>https://surajpandey1999.github.io/suraj-portfolio/portfolio.html</loc><priority>0.8</priority></url>
+  <url><loc>https://surajpandey1999.github.io/suraj-portfolio/blog.html</loc><priority>0.9</priority></url>
+  <url><loc>https://surajpandey1999.github.io/suraj-portfolio/contact.html</loc><priority>0.7</priority></url>
+  <url><loc>https://surajpandey1999.github.io/suraj-portfolio/posts/llm-tokens-to-text.html</loc><priority>0.7</priority></url>
+  <url><loc>https://surajpandey1999.github.io/suraj-portfolio/posts/understanding-llms.html</loc><priority>0.7</priority></url>
+  <url><loc>https://surajpandey1999.github.io/suraj-portfolio/posts/transformers-attention.html</loc><priority>0.7</priority></url>
+  <url><loc>https://surajpandey1999.github.io/suraj-portfolio/posts/genai-prompts-production.html</loc><priority>0.7</priority></url>
+  <url><loc>https://surajpandey1999.github.io/suraj-portfolio/posts/rag-explained.html</loc><priority>0.7</priority></url>
+  <url><loc>https://surajpandey1999.github.io/suraj-portfolio/posts/deep-learning-fundamentals.html</loc><priority>0.7</priority></url>
+  <url><loc>https://surajpandey1999.github.io/suraj-portfolio/posts/agentic-ai.html</loc><priority>0.7</priority></url>
+  <url><loc>https://surajpandey1999.github.io/suraj-portfolio/posts/internet-how-it-works.html</loc><priority>0.7</priority></url>
+  <url><loc>https://surajpandey1999.github.io/suraj-portfolio/posts/dns-explained.html</loc><priority>0.7</priority></url>
+  <url><loc>https://surajpandey1999.github.io/suraj-portfolio/posts/aws-lambda.html</loc><priority>0.7</priority></url>
+  <url><loc>https://surajpandey1999.github.io/suraj-portfolio/posts/cloud-computing-guide.html</loc><priority>0.7</priority></url>
+  <url><loc>https://surajpandey1999.github.io/suraj-portfolio/posts/devops-roadmap.html</loc><priority>0.7</priority></url>
+  <url><loc>https://surajpandey1999.github.io/suraj-portfolio/posts/linux-basics.html</loc><priority>0.7</priority></url>
+  <url><loc>https://surajpandey1999.github.io/suraj-portfolio/posts/cybersecurity-fundamentals.html</loc><priority>0.7</priority></url>
+</urlset>

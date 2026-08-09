@@ -46,3 +46,92 @@ footer{
 padding:20px;
 background:#111827;
 margin-top:40px;
+/* --- Added for About / Services / Portfolio / Contact pages --- */
+.page-hero{
+padding:50px 20px 20px;
+}
+.page-hero h1{
+font-size:2.2rem;
+margin-bottom:10px;
+}
+.page-hero p{
+max-width:650px;
+margin:0 auto;
+color:#cbd5e1;
+line-height:1.6;
+}
+.container{
+max-width:900px;
+margin:0 auto;
+padding:20px 20px 60px;
+text-align:left;
+}
+.card{
+background:#111827;
+border:1px solid #1e293b;
+border-radius:12px;
+padding:25px;
+margin-bottom:20px;
+}
+.card h3{
+margin-top:0;
+color:#60a5fa;
+}
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:20px;
+}
+.tag{
+display:inline-block;
+background:#1e293b;
+color:#93c5fd;
+padding:4px 10px;
+border-radius:20px;
+font-size:0.8rem;
+margin:3px 4px 0 0;
+}
+.section-title{
+text-align:center;
+font-size:1.6rem;
+margin:10px 0 25px;
+color:white;
+}
+.contact-form{
+max-width:500px;
+margin:0 auto;
+text-align:left;
+}
+.contact-form label{
+display:block;
+margin:15px 0 6px;
+font-weight:bold;
+color:#cbd5e1;
+}
+.contact-form input,
+.contact-form textarea{
+width:100%;
+padding:12px;
+border-radius:8px;
+border:1px solid #1e293b;
+background:#111827;
+color:white;
+font-family:inherit;
+box-sizing:border-box;
+}
+.contact-form textarea{
+min-height:130px;
+resize:vertical;
+}
+.contact-info{
+text-align:center;
+margin-bottom:30px;
+color:#cbd5e1;
+}
+.contact-info a{
+color:#60a5fa;
+text-decoration:none;
+}
+.contact-info a:hover{
+text-decoration:underline;
+}

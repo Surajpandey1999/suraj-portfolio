@@ -597,7 +597,7 @@
      FEATURED ARTICLE
 ====================================================== -->
 
-<section class="section">
+<section class="section" id="featuredSection">
     <div class="container">
 
         <div class="section-header">
@@ -605,7 +605,7 @@
             <h2 class="section-title">Featured Article</h2>
         </div>
 
-        <article class="featured-card reveal-up" data-category="llm">
+        <article class="featured-card reveal-up" data-category="llm" data-title="Inside a Large Language Model Tokens to Text">
 
             <div class="featured-visual">
                 <canvas id="featuredCanvas"></canvas>
@@ -966,6 +966,8 @@
     const articleCards = document.querySelectorAll(".article-card");
     const filterButtons = document.querySelectorAll(".filter-btn");
     const emptyState = document.getElementById("emptyState");
+    const featuredSection = document.getElementById("featuredSection");
+    const featuredCard = document.querySelector(".featured-card");
 
     let currentCategory = "all";
 
@@ -989,7 +991,18 @@
             }
         });
 
-        emptyState.style.display = visibleCount === 0 ? "block" : "none";
+        let featuredVisible = false;
+        if (featuredCard && featuredSection) {
+            const fCategory = featuredCard.dataset.category;
+            const fTitle = featuredCard.dataset.title.toLowerCase();
+            const fText = featuredCard.innerText.toLowerCase();
+            const fCategoryMatch = currentCategory === "all" || fCategory === currentCategory;
+            const fSearchMatch = fTitle.includes(searchTerm) || fText.includes(searchTerm);
+            featuredVisible = fCategoryMatch && fSearchMatch;
+            featuredSection.style.display = featuredVisible ? "block" : "none";
+        }
+
+        emptyState.style.display = (visibleCount === 0 && !featuredVisible) ? "block" : "none";
     }
 
     filterButtons.forEach(function (button) {

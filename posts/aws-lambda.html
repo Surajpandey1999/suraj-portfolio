@@ -7,21 +7,121 @@
     <title>AWS Lambda Explained for Beginners | Suraj Pandey</title>
 
     <meta name="description"
-          content="Learn AWS Lambda, serverless computing, functions, triggers, execution model and real-world use cases.">
+          content="Learn AWS Lambda, serverless computing, functions, triggers, execution model and real-world use cases — with diagrams.">
 
-    <link rel="stylesheet" href="../blog.css">
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+            background: #0b1120;
+            color: #e5e7eb;
+            line-height: 1.75;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        .container { width: min(1000px, 92%); margin: 0 auto; }
+
+        .blog-header {
+            border-bottom: 1px solid rgba(148,163,184,0.14);
+            background: rgba(11,17,32,0.9);
+            position: sticky; top: 0; z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+        .nav-container {
+            display: flex; align-items: center; justify-content: space-between;
+            min-height: 68px; flex-wrap: wrap; gap: 10px;
+        }
+        .logo { font-size: 1.4rem; font-weight: 800; color: #fff; }
+        .logo span { color: #ff9900; }
+        .blog-header nav a {
+            margin-left: 18px; font-size: 0.92rem; font-weight: 600;
+            color: #9ca3af;
+        }
+        .blog-header nav a:hover { color: #fff; }
+
+        .article-hero { padding: 55px 0 25px; }
+        .article-category {
+            display: inline-block; font-size: 0.78rem; font-weight: 700;
+            letter-spacing: 1.5px; color: #ff9900;
+            background: rgba(255,153,0,0.12);
+            border: 1px solid rgba(255,153,0,0.3);
+            padding: 5px 12px; border-radius: 20px; margin-bottom: 18px;
+        }
+        .article-hero h1 {
+            font-size: clamp(2rem, 5vw, 2.9rem);
+            line-height: 1.15; margin: 0 0 18px; color: #fff; letter-spacing: -0.5px;
+        }
+        .article-intro { font-size: 1.1rem; color: #cbd5e1; max-width: 720px; margin: 0 0 22px; }
+        .article-meta { font-size: 0.9rem; color: #6b7280; display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .article-content { padding: 20px 0 70px; }
+        .article-layout { display: grid; grid-template-columns: 1fr 260px; gap: 50px; align-items: start; }
+        @media (max-width: 820px) { .article-layout { grid-template-columns: 1fr; } }
+
+        article h2 {
+            font-size: 1.6rem; color: #fff; margin: 46px 0 16px;
+            padding-top: 10px; border-top: 1px solid rgba(148,163,184,0.12);
+        }
+        article h2:first-of-type { border-top: none; margin-top: 0; }
+        article h3 { font-size: 1.2rem; color: #f3f4f6; margin: 26px 0 10px; }
+        article p { color: #cbd5e1; margin: 0 0 16px; }
+        article ul { color: #cbd5e1; padding-left: 22px; margin-bottom: 16px; }
+        article li { margin-bottom: 8px; }
+
+        .diagram-box {
+            background: linear-gradient(180deg, #111a2e, #0c1424);
+            border: 1px solid rgba(148,163,184,0.16);
+            border-radius: 16px;
+            padding: 22px 14px;
+            margin: 22px 0 30px;
+            box-shadow: 0 20px 40px -20px rgba(0,0,0,0.6);
+            overflow-x: auto;
+        }
+        .diagram-caption { text-align: center; font-size: 0.85rem; color: #6b7280; margin-top: 10px; }
+
+        .article-project {
+            margin-top: 40px; padding: 24px;
+            background: linear-gradient(135deg, rgba(255,153,0,0.1), rgba(37,99,235,0.08));
+            border: 1px solid rgba(255,153,0,0.25);
+            border-radius: 14px;
+        }
+        .article-project h3 { margin-top: 0; color: #fff; }
+        .article-project p { margin-bottom: 14px; }
+        .article-project a {
+            display: inline-block; background: #ff9900; color: #0b1120;
+            padding: 10px 18px; border-radius: 8px; font-weight: 700; font-size: 0.9rem;
+        }
+
+        .article-sidebar { position: sticky; top: 90px; display: flex; flex-direction: column; gap: 16px; }
+        .sidebar-card {
+            background: #111a2e; border: 1px solid rgba(148,163,184,0.14);
+            border-radius: 12px; padding: 18px;
+        }
+        .sidebar-card h3 { margin: 0 0 12px; font-size: 0.9rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; }
+        .sidebar-card a { display: block; padding: 6px 0; font-size: 0.92rem; color: #cbd5e1; }
+        .sidebar-card a:hover { color: #ff9900; }
+        .sidebar-card span {
+            display: inline-block; background: rgba(148,163,184,0.12);
+            padding: 4px 10px; border-radius: 20px; font-size: 0.78rem; margin: 3px 4px 0 0; color: #cbd5e1;
+        }
+
+        footer { border-top: 1px solid rgba(148,163,184,0.14); padding: 40px 0; }
+        footer h3 { color: #fff; margin: 0 0 8px; }
+        footer p { color: #6b7280; margin: 0 0 18px; font-size: 0.9rem; }
+        .footer-links a { margin-right: 18px; font-size: 0.9rem; color: #9ca3af; }
+        .footer-links a:hover { color: #fff; }
+        .copyright { margin-top: 18px; font-size: 0.8rem; color: #4b5563; }
+    </style>
 </head>
 
 <body>
 
-    <!-- Navigation -->
     <header class="blog-header">
         <div class="container nav-container">
-
-            <a href="../index.html" class="logo">
-                Suraj<span>.</span>
-            </a>
-
+            <a href="../index.html" class="logo">Suraj<span>.</span></a>
             <nav>
                 <a href="../index.html">Home</a>
                 <a href="../about.html">About</a>
@@ -29,294 +129,323 @@
                 <a href="../blog.html">Blog</a>
                 <a href="../contact.html">Contact</a>
             </nav>
-
         </div>
     </header>
 
-
-    <!-- Article Header -->
     <main>
-
         <section class="article-hero">
-
             <div class="container">
-
-                <div class="article-category">
-                    AWS • CLOUD
-                </div>
-
-                <h1>
-                    AWS Lambda Explained for Beginners
-                </h1>
-
+                <div class="article-category">AWS • CLOUD</div>
+                <h1>AWS Lambda Explained for Beginners</h1>
                 <p class="article-intro">
                     Understand AWS Lambda, serverless computing, functions,
-                    triggers, execution, pricing and real-world use cases.
+                    triggers, execution and real-world use cases — with
+                    simple architecture diagrams so it actually clicks.
                 </p>
-
                 <div class="article-meta">
                     <span>By Suraj Pandey</span>
                     <span>•</span>
-                    <span>8 August 2026</span>
+                    <span>9 August 2026</span>
                     <span>•</span>
                     <span>6 min read</span>
                 </div>
-
             </div>
-
         </section>
 
-
-        <!-- Article Content -->
         <section class="article-content">
-
             <div class="container article-layout">
-
                 <article>
 
                     <h2>What is AWS Lambda?</h2>
-
                     <p>
                         AWS Lambda is a serverless compute service provided by
-                        Amazon Web Services. It allows developers to run code
-                        without managing servers or operating systems.
+                        Amazon Web Services. It lets you run code without
+                        creating, managing, or paying for an idle server.
                     </p>
-
                     <p>
-                        Instead of creating and maintaining an EC2 server,
-                        you upload your application code to Lambda and AWS
-                        automatically manages the underlying infrastructure.
+                        Instead of setting up and maintaining an EC2 server,
+                        you simply upload your function code. AWS runs it only
+                        when something triggers it, and automatically handles
+                        the infrastructure underneath.
                     </p>
-
 
                     <h2>How AWS Lambda Works</h2>
-
                     <p>
-                        Lambda executes your code when an event or request
-                        triggers the function. The function runs only when
-                        required and AWS automatically handles the required
-                        compute resources.
+                        A Lambda function stays completely idle — and free —
+                        until an event triggers it. AWS then spins up the
+                        exact compute it needs, runs your code, returns the
+                        result, and shuts it back down.
                     </p>
 
-                    <div class="code-box">
-<pre>
-User
-  ↓
-API Gateway
-  ↓
-AWS Lambda
-  ↓
-Application Logic
-  ↓
-Database / AWS Service
-</pre>
-                    </div>
+                    <div class="diagram-box">
+                        <svg viewBox="0 0 700 190" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0" stop-color="#1e293b"/>
+                                    <stop offset="1" stop-color="#0f172a"/>
+                                </linearGradient>
+                                <linearGradient id="gOrange" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0" stop-color="#ffb340"/>
+                                    <stop offset="1" stop-color="#ff9900"/>
+                                </linearGradient>
+                                <filter id="shadow1" x="-40%" y="-40%" width="180%" height="180%">
+                                    <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.45"/>
+                                </filter>
+                                <marker id="arrow1" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                                    <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+                                </marker>
+                            </defs>
 
+                            <rect x="20" y="55" width="150" height="80" rx="14" fill="url(#g1)" stroke="#334155" filter="url(#shadow1)"/>
+                            <text x="95" y="88" text-anchor="middle" font-size="22" fill="#e5e7eb">⚡</text>
+                            <text x="95" y="112" text-anchor="middle" font-size="13" fill="#cbd5e1" font-weight="600">Event Trigger</text>
+                            <text x="95" y="127" text-anchor="middle" font-size="10" fill="#6b7280">S3 / API / Timer</text>
+
+                            <line x1="170" y1="95" x2="270" y2="95" stroke="#64748b" stroke-width="2" marker-end="url(#arrow1)"/>
+
+                            <rect x="275" y="45" width="160" height="100" rx="14" fill="url(#gOrange)" filter="url(#shadow1)"/>
+                            <text x="355" y="90" text-anchor="middle" font-size="24" fill="#0b1120">λ</text>
+                            <text x="355" y="112" text-anchor="middle" font-size="13" fill="#0b1120" font-weight="700">AWS Lambda</text>
+                            <text x="355" y="128" text-anchor="middle" font-size="10" fill="#3a2600">Runs your code</text>
+
+                            <line x1="435" y1="95" x2="535" y2="95" stroke="#64748b" stroke-width="2" marker-end="url(#arrow1)"/>
+
+                            <rect x="540" y="55" width="150" height="80" rx="14" fill="url(#g1)" stroke="#334155" filter="url(#shadow1)"/>
+                            <text x="615" y="88" text-anchor="middle" font-size="22" fill="#e5e7eb">✅</text>
+                            <text x="615" y="112" text-anchor="middle" font-size="13" fill="#cbd5e1" font-weight="600">Response</text>
+                            <text x="615" y="127" text-anchor="middle" font-size="10" fill="#6b7280">Returned to caller</text>
+                        </svg>
+                        <p class="diagram-caption">Lambda stays idle (no cost) until a trigger fires — then executes and shuts down.</p>
+                    </div>
 
                     <h2>Key Components</h2>
 
                     <h3>1. Lambda Function</h3>
-
                     <p>
-                        A Lambda function contains the code that AWS executes.
-                        You can write Lambda functions using languages such as
-                        Python, JavaScript, Java and other supported runtimes.
+                        The actual code AWS executes — written in Python,
+                        Node.js, Java, or other supported runtimes.
                     </p>
-
 
                     <h3>2. Trigger</h3>
-
                     <p>
-                        A trigger starts the Lambda function. Common triggers
-                        include API Gateway, S3 events, EventBridge,
-                        DynamoDB Streams and scheduled events.
+                        What starts the function — commonly API Gateway,
+                        S3 events, EventBridge schedules, or DynamoDB Streams.
                     </p>
-
 
                     <h3>3. Execution Role</h3>
-
                     <p>
-                        Lambda uses an IAM execution role to access AWS
-                        resources. For example, a Lambda function can be given
-                        permission to read or write data in DynamoDB.
+                        An IAM role that gives Lambda permission to access
+                        other AWS resources, like reading or writing to
+                        DynamoDB or S3.
                     </p>
-
 
                     <h2>AWS Lambda with API Gateway</h2>
-
                     <p>
-                        One of the most common serverless architectures is
-                        API Gateway combined with Lambda.
+                        The most common serverless pattern pairs API Gateway
+                        with Lambda to build a full backend API — no server
+                        required anywhere in the chain.
                     </p>
 
-                    <div class="code-box">
-<pre>
-Client
-   ↓
-API Gateway
-   ↓
-Lambda
-   ↓
-DynamoDB
-</pre>
+                    <div class="diagram-box">
+                        <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0" stop-color="#1e293b"/>
+                                    <stop offset="1" stop-color="#0f172a"/>
+                                </linearGradient>
+                                <linearGradient id="gBlue" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0" stop-color="#60a5fa"/>
+                                    <stop offset="1" stop-color="#2563eb"/>
+                                </linearGradient>
+                                <linearGradient id="gOrange2" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0" stop-color="#ffb340"/>
+                                    <stop offset="1" stop-color="#ff9900"/>
+                                </linearGradient>
+                                <linearGradient id="gGreen" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0" stop-color="#4ade80"/>
+                                    <stop offset="1" stop-color="#16a34a"/>
+                                </linearGradient>
+                                <filter id="shadow2" x="-40%" y="-40%" width="180%" height="180%">
+                                    <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.45"/>
+                                </filter>
+                                <marker id="arrow2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                                    <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+                                </marker>
+                            </defs>
+
+                            <rect x="10" y="60" width="130" height="80" rx="14" fill="url(#g2)" stroke="#334155" filter="url(#shadow2)"/>
+                            <text x="75" y="95" text-anchor="middle" font-size="22" fill="#e5e7eb">🖥️</text>
+                            <text x="75" y="120" text-anchor="middle" font-size="12" fill="#cbd5e1" font-weight="600">Client</text>
+
+                            <line x1="140" y1="100" x2="205" y2="100" stroke="#64748b" stroke-width="2" marker-end="url(#arrow2)"/>
+
+                            <rect x="210" y="50" width="140" height="100" rx="14" fill="url(#gBlue)" filter="url(#shadow2)"/>
+                            <text x="280" y="90" text-anchor="middle" font-size="20" fill="#fff">🌐</text>
+                            <text x="280" y="112" text-anchor="middle" font-size="12" fill="#fff" font-weight="700">API Gateway</text>
+                            <text x="280" y="127" text-anchor="middle" font-size="9" fill="#dbeafe">Receives HTTP request</text>
+
+                            <line x1="350" y1="100" x2="415" y2="100" stroke="#64748b" stroke-width="2" marker-end="url(#arrow2)"/>
+
+                            <rect x="420" y="50" width="130" height="100" rx="14" fill="url(#gOrange2)" filter="url(#shadow2)"/>
+                            <text x="485" y="90" text-anchor="middle" font-size="20" fill="#0b1120">λ</text>
+                            <text x="485" y="112" text-anchor="middle" font-size="12" fill="#0b1120" font-weight="700">Lambda</text>
+                            <text x="485" y="127" text-anchor="middle" font-size="9" fill="#3a2600">Processes request</text>
+
+                            <line x1="550" y1="100" x2="605" y2="100" stroke="#64748b" stroke-width="2" marker-end="url(#arrow2)"/>
+
+                            <rect x="610" y="60" width="90" height="80" rx="14" fill="url(#gGreen)" filter="url(#shadow2)"/>
+                            <text x="655" y="95" text-anchor="middle" font-size="20" fill="#052e16">🗄️</text>
+                            <text x="655" y="120" text-anchor="middle" font-size="11" fill="#052e16" font-weight="700">Database</text>
+                        </svg>
+                        <p class="diagram-caption">Client → API Gateway (HTTP layer) → Lambda (logic) → Database (storage) — a full serverless backend.</p>
                     </div>
-
-                    <p>
-                        API Gateway receives an HTTP request and invokes the
-                        Lambda function. Lambda processes the request and
-                        returns a response through API Gateway.
-                    </p>
-
 
                     <h2>My Serverless URL Shortener Project</h2>
-
                     <p>
-                        I used AWS Lambda while building a serverless URL
-                        shortener project.
+                        I built this exact pattern for a real project — a
+                        URL shortener with no servers to manage at all.
+                    </p>
+                    <p>
+                        API Gateway receives the request, Lambda generates
+                        or looks up the short code, and DynamoDB stores the
+                        mapping between the short code and the original URL.
                     </p>
 
-                    <p>
-                        The project uses Amazon API Gateway to receive HTTP
-                        requests, AWS Lambda to process the URL, and Amazon
-                        DynamoDB to store the relationship between the short
-                        code and the original URL.
-                    </p>
+                    <div class="diagram-box">
+                        <svg viewBox="0 0 700 210" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="g3" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0" stop-color="#1e293b"/>
+                                    <stop offset="1" stop-color="#0f172a"/>
+                                </linearGradient>
+                                <linearGradient id="gBlue3" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0" stop-color="#60a5fa"/>
+                                    <stop offset="1" stop-color="#2563eb"/>
+                                </linearGradient>
+                                <linearGradient id="gOrange3" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0" stop-color="#ffb340"/>
+                                    <stop offset="1" stop-color="#ff9900"/>
+                                </linearGradient>
+                                <linearGradient id="gPurple3" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0" stop-color="#c084fc"/>
+                                    <stop offset="1" stop-color="#9333ea"/>
+                                </linearGradient>
+                                <linearGradient id="gGreen3" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0" stop-color="#4ade80"/>
+                                    <stop offset="1" stop-color="#16a34a"/>
+                                </linearGradient>
+                                <filter id="shadow3" x="-40%" y="-40%" width="180%" height="180%">
+                                    <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.45"/>
+                                </filter>
+                                <marker id="arrow3" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                                    <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+                                </marker>
+                            </defs>
 
-                    <div class="code-box">
-<pre>
-User
-  ↓
-API Gateway
-  ↓
-Lambda
-  ↓
-DynamoDB
-  ↓
-Short URL
-</pre>
+                            <rect x="0" y="65" width="110" height="80" rx="14" fill="url(#g3)" stroke="#334155" filter="url(#shadow3)"/>
+                            <text x="55" y="100" text-anchor="middle" font-size="20" fill="#e5e7eb">🙋</text>
+                            <text x="55" y="123" text-anchor="middle" font-size="11" fill="#cbd5e1" font-weight="600">User</text>
+
+                            <line x1="110" y1="105" x2="165" y2="105" stroke="#64748b" stroke-width="2" marker-end="url(#arrow3)"/>
+
+                            <rect x="170" y="55" width="120" height="100" rx="14" fill="url(#gBlue3)" filter="url(#shadow3)"/>
+                            <text x="230" y="95" text-anchor="middle" font-size="18" fill="#fff">🌐</text>
+                            <text x="230" y="117" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">API Gateway</text>
+
+                            <line x1="290" y1="105" x2="345" y2="105" stroke="#64748b" stroke-width="2" marker-end="url(#arrow3)"/>
+
+                            <rect x="350" y="55" width="110" height="100" rx="14" fill="url(#gOrange3)" filter="url(#shadow3)"/>
+                            <text x="405" y="95" text-anchor="middle" font-size="18" fill="#0b1120">λ</text>
+                            <text x="405" y="117" text-anchor="middle" font-size="11" fill="#0b1120" font-weight="700">Lambda</text>
+
+                            <line x1="460" y1="105" x2="515" y2="105" stroke="#64748b" stroke-width="2" marker-end="url(#arrow3)"/>
+
+                            <rect x="520" y="65" width="90" height="80" rx="14" fill="url(#gPurple3)" filter="url(#shadow3)"/>
+                            <text x="565" y="100" text-anchor="middle" font-size="18" fill="#fff">🗄️</text>
+                            <text x="565" y="123" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">DynamoDB</text>
+
+                            <line x1="565" y1="145" x2="565" y2="175" stroke="#64748b" stroke-width="2" marker-end="url(#arrow3)"/>
+
+                            <rect x="490" y="178" width="150" height="30" rx="8" fill="url(#gGreen3)" filter="url(#shadow3)"/>
+                            <text x="565" y="198" text-anchor="middle" font-size="12" fill="#052e16" font-weight="700">🔗 Short URL Returned</text>
+                        </svg>
+                        <p class="diagram-caption">User → API Gateway → Lambda → DynamoDB (stores mapping) → short URL sent back.</p>
                     </div>
 
-
                     <h2>Advantages of AWS Lambda</h2>
-
                     <ul>
                         <li>No server management</li>
                         <li>Automatic scaling</li>
-                        <li>Pay-per-use pricing model</li>
-                        <li>Easy integration with AWS services</li>
-                        <li>Good choice for event-driven applications</li>
-                        <li>Useful for APIs and backend applications</li>
+                        <li>Pay-per-use pricing — nothing runs, nothing costs</li>
+                        <li>Easy integration with other AWS services</li>
+                        <li>Ideal for event-driven applications</li>
+                        <li>Great for APIs and backend logic</li>
                     </ul>
 
-
                     <h2>When Should You Use Lambda?</h2>
-
                     <p>
-                        AWS Lambda is especially useful for APIs, automation,
+                        Lambda is especially useful for APIs, automation,
                         event processing, scheduled tasks, file processing,
-                        serverless applications and backend services.
+                        and lightweight backend services.
                     </p>
 
-
                     <h2>Conclusion</h2>
-
                     <p>
                         AWS Lambda is one of the most important services to
                         understand when learning cloud computing and
-                        serverless architecture.
+                        serverless architecture. The best way to really learn
+                        it is to build something small — an API, an
+                        automation, or a project like the one below.
                     </p>
-
-                    <p>
-                        For beginners, a great way to learn Lambda is to build
-                        a small project using Lambda, API Gateway and DynamoDB.
-                        Building real projects makes cloud concepts much easier
-                        to understand.
-                    </p>
-
 
                     <div class="article-project">
-
                         <h3>🚀 Want to see the project?</h3>
-
                         <p>
-                            Check out my Serverless URL Shortener project
-                            built using AWS Lambda, API Gateway and DynamoDB.
+                            Check out my Serverless URL Shortener — built
+                            using exactly this AWS Lambda + API Gateway +
+                            DynamoDB pattern.
                         </p>
-
-                        <a
-                            href="https://github.com/Surajpandey1999/serverless-url-shortener"
-                            target="_blank"
-                            rel="noopener noreferrer">
+                        <a href="https://github.com/Surajpandey1999/serverless-url-shortener" target="_blank" rel="noopener noreferrer">
                             View Project on GitHub →
                         </a>
-
                     </div>
 
                 </article>
 
-
-                <!-- Sidebar -->
                 <aside class="article-sidebar">
-
                     <div class="sidebar-card">
-
                         <h3>In this article</h3>
-
-                        <a href="#top">AWS Lambda</a>
-                        <a href="#top">How Lambda Works</a>
-                        <a href="#top">Lambda Components</a>
+                        <a href="#top">What is Lambda</a>
+                        <a href="#top">How it Works</a>
+                        <a href="#top">Key Components</a>
                         <a href="#top">API Gateway</a>
                         <a href="#top">Real Project</a>
                         <a href="#top">Advantages</a>
-
                     </div>
-
                     <div class="sidebar-card">
-
                         <h3>Topics</h3>
-
                         <span>AWS</span>
                         <span>Cloud</span>
                         <span>Serverless</span>
                         <span>Lambda</span>
-
                     </div>
-
                 </aside>
-
             </div>
-
         </section>
-
     </main>
 
-
-    <!-- Footer -->
     <footer>
-
         <div class="container">
-
             <h3>Suraj.</h3>
-
-            <p>
-                Cloud & IT Enthusiast building practical technology projects.
-            </p>
-
+            <p>Cloud & IT Enthusiast building practical technology projects.</p>
             <div class="footer-links">
-
                 <a href="../index.html">Home</a>
                 <a href="../portfolio.html">Portfolio</a>
                 <a href="../blog.html">Blog</a>
                 <a href="../contact.html">Contact</a>
-
             </div>
-
-            <p class="copyright">
-                © 2026 Suraj Pandey. All rights reserved.
-            </p>
-
+            <p class="copyright">© 2026 Suraj Pandey. All rights reserved.</p>
         </div>
-
     </footer>
 
 </body>

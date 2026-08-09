@@ -926,39 +926,79 @@ Host: example.com</code></pre>
 
             <h2>🧠 The Internet in One Simple Diagram</h2>
 
-            <div class="architecture">
+            <div class="architecture" style="background:#0f172a; overflow-x:auto;">
 
-                <pre><code>
-             👤 USER
-                │
-                ▼
-          🌐 WEB BROWSER
-                │
-                ▼
-          📖 DNS LOOKUP
-                │
-                ▼
-          🔢 IP ADDRESS
-                │
-                ▼
-          🚦 ROUTER / ISP
-                │
-                ▼
-       🌍 INTERNET NETWORK
-                │
-                ▼
-          🖥️ WEB SERVER
-                │
-                ▼
-         📨 HTTP/HTTPS
-             RESPONSE
-                │
-                ▼
-          🌐 WEB BROWSER
-                │
-                ▼
-             WEBSITE
-                </code></pre>
+                <svg viewBox="0 0 260 940" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:340px; display:block; margin:0 auto;">
+                    <defs>
+                        <linearGradient id="netNode" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" stop-color="#1e293b"/>
+                            <stop offset="1" stop-color="#0f172a"/>
+                        </linearGradient>
+                        <linearGradient id="netFinal" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" stop-color="#4ade80"/>
+                            <stop offset="1" stop-color="#16a34a"/>
+                        </linearGradient>
+                        <filter id="netShadow" x="-50%" y="-50%" width="200%" height="200%">
+                            <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#000" flood-opacity="0.5"/>
+                        </filter>
+                        <marker id="netArrow" markerWidth="10" markerHeight="10" refX="5" refY="8" orient="auto">
+                            <path d="M0,0 L5,8 L10,0 Z" fill="#60a5fa"/>
+                        </marker>
+                    </defs>
+
+                    <!-- 8 stacked nodes, 110px apart -->
+                    <g font-family="Arial, sans-serif">
+                        <!-- 1 User -->
+                        <rect x="30" y="0" width="200" height="60" rx="12" fill="url(#netNode)" stroke="#334155" filter="url(#netShadow)"/>
+                        <text x="130" y="35" text-anchor="middle" font-size="15" fill="#e5e7eb" font-weight="700">👤 User</text>
+                        <line x1="130" y1="60" x2="130" y2="98" stroke="#60a5fa" stroke-width="2" marker-end="url(#netArrow)"/>
+
+                        <!-- 2 Browser -->
+                        <rect x="30" y="100" width="200" height="60" rx="12" fill="url(#netNode)" stroke="#334155" filter="url(#netShadow)"/>
+                        <text x="130" y="135" text-anchor="middle" font-size="15" fill="#e5e7eb" font-weight="700">🌐 Web Browser</text>
+                        <line x1="130" y1="160" x2="130" y2="198" stroke="#60a5fa" stroke-width="2" marker-end="url(#netArrow)"/>
+
+                        <!-- 3 DNS -->
+                        <rect x="30" y="200" width="200" height="60" rx="12" fill="url(#netNode)" stroke="#334155" filter="url(#netShadow)"/>
+                        <text x="130" y="235" text-anchor="middle" font-size="15" fill="#e5e7eb" font-weight="700">📖 DNS Lookup</text>
+                        <line x1="130" y1="260" x2="130" y2="298" stroke="#60a5fa" stroke-width="2" marker-end="url(#netArrow)"/>
+
+                        <!-- 4 IP -->
+                        <rect x="30" y="300" width="200" height="60" rx="12" fill="url(#netNode)" stroke="#334155" filter="url(#netShadow)"/>
+                        <text x="130" y="335" text-anchor="middle" font-size="15" fill="#e5e7eb" font-weight="700">🔢 IP Address</text>
+                        <line x1="130" y1="360" x2="130" y2="398" stroke="#60a5fa" stroke-width="2" marker-end="url(#netArrow)"/>
+
+                        <!-- 5 Router -->
+                        <rect x="30" y="400" width="200" height="60" rx="12" fill="url(#netNode)" stroke="#334155" filter="url(#netShadow)"/>
+                        <text x="130" y="435" text-anchor="middle" font-size="15" fill="#e5e7eb" font-weight="700">🚦 Router / ISP</text>
+                        <line x1="130" y1="460" x2="130" y2="498" stroke="#60a5fa" stroke-width="2" marker-end="url(#netArrow)"/>
+
+                        <!-- 6 Internet backbone -->
+                        <rect x="30" y="500" width="200" height="60" rx="12" fill="url(#netNode)" stroke="#334155" filter="url(#netShadow)"/>
+                        <text x="130" y="535" text-anchor="middle" font-size="14" fill="#e5e7eb" font-weight="700">🌍 Internet Network</text>
+                        <line x1="130" y1="560" x2="130" y2="598" stroke="#60a5fa" stroke-width="2" marker-end="url(#netArrow)"/>
+
+                        <!-- 7 Server -->
+                        <rect x="30" y="600" width="200" height="60" rx="12" fill="url(#netNode)" stroke="#334155" filter="url(#netShadow)"/>
+                        <text x="130" y="635" text-anchor="middle" font-size="15" fill="#e5e7eb" font-weight="700">🖥️ Web Server</text>
+                        <line x1="130" y1="660" x2="130" y2="698" stroke="#60a5fa" stroke-width="2" marker-end="url(#netArrow)"/>
+
+                        <!-- 8 Response -->
+                        <rect x="30" y="700" width="200" height="60" rx="12" fill="url(#netNode)" stroke="#334155" filter="url(#netShadow)"/>
+                        <text x="130" y="728" text-anchor="middle" font-size="13" fill="#e5e7eb" font-weight="700">📨 HTTP/HTTPS</text>
+                        <text x="130" y="746" text-anchor="middle" font-size="13" fill="#e5e7eb" font-weight="700">Response</text>
+                        <line x1="130" y1="760" x2="130" y2="798" stroke="#60a5fa" stroke-width="2" marker-end="url(#netArrow)"/>
+
+                        <!-- 9 Browser renders -->
+                        <rect x="30" y="800" width="200" height="60" rx="12" fill="url(#netNode)" stroke="#334155" filter="url(#netShadow)"/>
+                        <text x="130" y="835" text-anchor="middle" font-size="15" fill="#e5e7eb" font-weight="700">🌐 Browser Renders</text>
+                        <line x1="130" y1="860" x2="130" y2="878" stroke="#60a5fa" stroke-width="2" marker-end="url(#netArrow)"/>
+
+                        <!-- 10 Website -->
+                        <rect x="55" y="880" width="150" height="55" rx="12" fill="url(#netFinal)" filter="url(#netShadow)"/>
+                        <text x="130" y="915" text-anchor="middle" font-size="16" fill="#052e16" font-weight="800">✅ Website</text>
+                    </g>
+                </svg>
 
             </div>
 

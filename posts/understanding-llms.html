@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Understanding Large Language Models | Suraj Pandey</title>
+<meta name="description" content="How LLMs like GPT and Claude are trained, what 'parameters' actually means, and why scale changes behavior.">
+<style>
+* { box-sizing: border-box; }
+body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; background:#0b1120; color:#e5e7eb; line-height:1.75; }
+a { color:inherit; text-decoration:none; }
+.container { width:min(1000px,92%); margin:0 auto; }
+.blog-header { border-bottom:1px solid rgba(148,163,184,0.14); background:rgba(11,17,32,0.9); position:sticky; top:0; z-index:10; backdrop-filter:blur(10px); }
+.nav-container { display:flex; align-items:center; justify-content:space-between; min-height:68px; flex-wrap:wrap; gap:10px; }
+.logo { font-size:1.4rem; font-weight:800; color:#fff; }
+.logo span { color:#7c5cff; }
+.blog-header nav a { margin-left:18px; font-size:0.92rem; font-weight:600; color:#9ca3af; }
+.blog-header nav a:hover { color:#fff; }
+.article-hero { padding:55px 0 25px; }
+.article-category { display:inline-block; font-size:0.78rem; font-weight:700; letter-spacing:1.5px; color:#a78bfa; background:rgba(124,92,255,0.12); border:1px solid rgba(124,92,255,0.3); padding:5px 12px; border-radius:20px; margin-bottom:18px; }
+.article-hero h1 { font-size:clamp(2rem,5vw,2.9rem); line-height:1.15; margin:0 0 18px; color:#fff; letter-spacing:-0.5px; }
+.article-intro { font-size:1.1rem; color:#cbd5e1; max-width:720px; margin:0 0 22px; }
+.article-meta { font-size:0.9rem; color:#6b7280; display:flex; gap:10px; flex-wrap:wrap; }
+.article-content { padding:20px 0 70px; }
+.article-layout { display:grid; grid-template-columns:1fr 260px; gap:50px; align-items:start; }
+@media (max-width:820px) { .article-layout { grid-template-columns:1fr; } }
+article h2 { font-size:1.6rem; color:#fff; margin:46px 0 16px; padding-top:10px; border-top:1px solid rgba(148,163,184,0.12); }
+article h2:first-of-type { border-top:none; margin-top:0; }
+article h3 { font-size:1.2rem; color:#f3f4f6; margin:26px 0 10px; }
+article p { color:#cbd5e1; margin:0 0 16px; }
+article ul { color:#cbd5e1; padding-left:22px; margin-bottom:16px; }
+article li { margin-bottom:8px; }
+.diagram-box { background:linear-gradient(180deg,#111a2e,#0c1424); border:1px solid rgba(148,163,184,0.16); border-radius:16px; padding:22px 14px; margin:22px 0 30px; box-shadow:0 20px 40px -20px rgba(0,0,0,0.6); overflow-x:auto; }
+.diagram-caption { text-align:center; font-size:0.85rem; color:#6b7280; margin-top:10px; }
+.article-sidebar { position:sticky; top:90px; display:flex; flex-direction:column; gap:16px; }
+.sidebar-card { background:#111a2e; border:1px solid rgba(148,163,184,0.14); border-radius:12px; padding:18px; }
+.sidebar-card h3 { margin:0 0 12px; font-size:0.9rem; color:#9ca3af; text-transform:uppercase; letter-spacing:1px; }
+.sidebar-card a { display:block; padding:6px 0; font-size:0.92rem; color:#cbd5e1; }
+.sidebar-card a:hover { color:#a78bfa; }
+.sidebar-card span { display:inline-block; background:rgba(148,163,184,0.12); padding:4px 10px; border-radius:20px; font-size:0.78rem; margin:3px 4px 0 0; color:#cbd5e1; }
+footer { border-top:1px solid rgba(148,163,184,0.14); padding:40px 0; }
+footer h3 { color:#fff; margin:0 0 8px; }
+footer p { color:#6b7280; margin:0 0 18px; font-size:0.9rem; }
+.footer-links a { margin-right:18px; font-size:0.9rem; color:#9ca3af; }
+.footer-links a:hover { color:#fff; }
+.copyright { margin-top:18px; font-size:0.8rem; color:#4b5563; }
+</style>
+</head>
+<body>
+<header class="blog-header">
+<div class="container nav-container">
+<a href="../index.html" class="logo">Suraj<span>.</span></a>
+<nav>
+<a href="../index.html">Home</a>
+<a href="../about.html">About</a>
+<a href="../portfolio.html">Portfolio</a>
+<a href="../blog.html">Blog</a>
+<a href="../contact.html">Contact</a>
+</nav>
+</div>
+</header>
+
+<main>
+<section class="article-hero">
+<div class="container">
+<div class="article-category">LLM • FUNDAMENTALS</div>
+<h1>Understanding Large Language Models</h1>
+<p class="article-intro">How LLMs like GPT and Claude are trained, what "parameters" actually means, and why scale changes behavior.</p>
+<div class="article-meta"><span>By Suraj Pandey</span><span>•</span><span>9 August 2026</span><span>•</span><span>9 min read</span></div>
+</div>
+</section>
+
+<section class="article-content">
+<div class="container article-layout">
+<article>
+
+<h2>What is a Large Language Model?</h2>
+<p>
+An LLM is a neural network trained on massive amounts of text to
+predict the next word in a sequence. Do that well enough, at large
+enough scale, and the model develops the ability to write, reason,
+summarize, translate, and hold conversations.
+</p>
+
+<h2>What Are "Parameters"?</h2>
+<p>
+Parameters are the individual numbers (weights) inside the neural
+network that get adjusted during training — think of them as tiny
+dials the model learns to set correctly. GPT-3 had 175 billion of
+them; modern frontier models have even more. More parameters
+generally means more capacity to learn complex patterns.
+</p>
+
+<div class="diagram-box">
+<svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="u1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a78bfa"/><stop offset="1" stop-color="#7c5cff"/></linearGradient>
+<filter id="us" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#000" flood-opacity="0.4"/></filter>
+</defs>
+<g font-size="12" text-anchor="middle" font-weight="800" fill="#1a0e3d">
+<circle cx="80" cy="90" r="25" fill="url(#u1)" filter="url(#us)"/><text x="80" y="150" fill="#9ca3af" font-size="11">Small model</text><text x="80" y="165" fill="#6b7280" font-size="9" font-weight="400">~1M params</text>
+
+<circle cx="260" cy="90" r="42" fill="url(#u1)" filter="url(#us)"/><text x="260" y="150" fill="#9ca3af" font-size="11">Medium model</text><text x="260" y="165" fill="#6b7280" font-size="9" font-weight="400">~1B params</text>
+
+<circle cx="520" cy="90" r="70" fill="url(#u1)" filter="url(#us)"/><text x="520" y="167" fill="#9ca3af" font-size="11">Frontier LLM</text><text x="520" y="180" fill="#6b7280" font-size="9" font-weight="400">100B+ params</text>
+</g>
+</svg>
+<p class="diagram-caption">More parameters = more capacity to capture complex patterns in language (roughly — not the only factor).</p>
+</div>
+
+<h2>How Training Works (Simplified)</h2>
+<ol style="color:#cbd5e1; padding-left:22px;">
+<li style="margin-bottom:8px;"><strong>Pre-training</strong> — the model reads a huge portion of the internet, books, and code, learning to predict the next word over and over, billions of times.</li>
+<li style="margin-bottom:8px;"><strong>Fine-tuning</strong> — the base model is further trained on curated examples to follow instructions well.</li>
+<li style="margin-bottom:8px;"><strong>RLHF</strong> (Reinforcement Learning from Human Feedback) — humans rank different responses, and the model is adjusted to prefer the responses people rate as better, more helpful, and safer.</li>
+</ol>
+
+<h2>Why Scale Changes Behavior</h2>
+<p>
+As models get bigger and see more training data, they don't just get
+"a little better" — certain abilities appear somewhat suddenly at
+scale, like multi-step reasoning or following complex instructions.
+This is often called an "emergent capability" — the model wasn't
+explicitly taught these skills, but they show up once scale and
+training data cross a certain threshold.
+</p>
+
+<h2>What LLMs Are Actually Good and Bad At</h2>
+<ul>
+<li><strong>Good at:</strong> writing, summarizing, explaining, translating, pattern completion, code generation</li>
+<li><strong>Struggles with:</strong> precise arithmetic on large numbers, knowing things after its training cutoff, being 100% factually reliable without external tools (like search or RAG)</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>
+LLMs aren't magic — they're the result of a next-word-prediction
+objective applied at massive scale, refined through fine-tuning and
+human feedback. Understanding parameters, training stages, and scale
+effects gives you a solid mental model for how tools like GPT and
+Claude actually work under the hood.
+</p>
+
+</article>
+
+<aside class="article-sidebar">
+<div class="sidebar-card">
+<h3>In this article</h3>
+<a href="#top">What is an LLM</a>
+<a href="#top">Parameters</a>
+<a href="#top">How Training Works</a>
+<a href="#top">Scale Effects</a>
+<a href="#top">Strengths & Weaknesses</a>
+</div>
+<div class="sidebar-card">
+<h3>Topics</h3>
+<span>LLM</span><span>AI</span><span>Fundamentals</span>
+</div>
+</aside>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="container">
+<h3>Suraj.</h3>
+<p>Cloud & IT Enthusiast building practical technology projects.</p>
+<div class="footer-links">
+<a href="../index.html">Home</a>
+<a href="../portfolio.html">Portfolio</a>
+<a href="../blog.html">Blog</a>
+<a href="../contact.html">Contact</a>
+</div>
+<p class="copyright">© 2026 Suraj Pandey. All rights reserved.</p>
+</div>
+</footer>
+</body>
+</html>

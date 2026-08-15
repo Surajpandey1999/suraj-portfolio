@@ -547,16 +547,20 @@
     to { opacity: 0.8; }
 }
 
-/* Top Independence Day banner — stays above content, but content is
-   pushed down (see .hero padding-top) so nothing sits underneath it */
+/* Top Independence Day banner — NOT fixed anymore. It sits in normal
+   page flow at the very top, so it scrolls away naturally and can
+   never overlap headings or the verdict box further down the page. */
 .independence-banner-wrap{
-    position: fixed;
-    top: 0;
-    left: 0;
+    position: relative;
     width: 100%;
-    z-index: 100000;
-    pointer-events: none;
+    z-index: 5;
     display: none;
+    transition: max-height 0.6s ease, opacity 0.6s ease;
+    overflow: hidden;
+}
+.independence-banner-wrap.fade-out{
+    max-height: 0;
+    opacity: 0;
 }
 .independence-banner {
     padding: 14px 20px;
@@ -624,14 +628,11 @@
     100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
 }
 
-/* Thin patriotic edge — a slim 4px bar, not a solid block, so it never
-   covers footer text even on short pages */
+/* Thin patriotic edge — a slim 4px bar placed after the footer in
+   normal flow, so it never sits on top of any text */
 #independence-edge{
-    position: fixed;
-    left: 0; right: 0; bottom: 0;
+    width: 100%;
     height: 4px;
-    z-index: 100001;
-    pointer-events: none;
     display: none;
     background: linear-gradient(
         to right,
@@ -639,14 +640,6 @@
         #ffffff 33.33%, #ffffff 66.66%,
         #138808 66.66%, #138808 100%
     );
-}
-
-/* Push page content below the fixed banner so nothing hides behind it */
-body.independence-active .hero{
-    padding-top: 128px;
-}
-@media (max-width: 640px){
-    body.independence-active .hero{ padding-top: 148px; }
 }
 </style>
 
@@ -664,8 +657,6 @@ body.independence-active .hero{
     </div>
 </div>
 
-<div id="independence-edge"></div>
-
 <script>
 (function () {
     const today = new Date();
@@ -679,8 +670,11 @@ body.independence-active .hero{
         const backdrop = document.getElementById("independence-backdrop");
         backdrop.style.display = "block";
 
-        document.getElementById("independenceBannerWrap").style.display = "block";
-        document.getElementById("independence-edge").style.display = "block";
+        const bannerWrap = document.getElementById("independenceBannerWrap");
+        bannerWrap.style.display = "block";
+
+        const edge = document.getElementById("independence-edge");
+        if (edge) edge.style.display = "block";
 
         // Create floating tricolour particles inside the backdrop (behind content)
         const colours = ["#ff9933", "#ffffff", "#138808"];
@@ -693,6 +687,13 @@ body.independence-active .hero{
             particle.style.animationDuration = (5 + Math.random() * 7) + "s";
             backdrop.appendChild(particle);
         }
+
+        // The banner lives in normal page flow (not fixed), so it can
+        // never overlap scrolled content. It still gently folds away
+        // after a few seconds to keep the reading experience clean.
+        setTimeout(function () {
+            bannerWrap.classList.add("fade-out");
+        }, 6000);
     }
 })();
 </script>
@@ -949,6 +950,8 @@ body.independence-active .hero{
   Sources referenced: Election Commission of India data via Business Standard &amp; The Tribune (2024) · Supreme Court proceedings on the 2024 NEET-UG matter · Careers360 year-ender reporting on 2024 exam leaks · Public Examinations (Prevention of Unfair Means) Act, 2024 · Periodic Labour Force Survey (PLFS) Annual Report 2025, MoSPI · DataReportal &amp; Meltwater, "Digital 2025: India".<br><br>
   Written for surajpandey1999.github.io — Political Science, Public Administration &amp; Cloud/IT
 </footer>
+
+<div id="independence-edge"></div>
 
 <div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
 

@@ -510,56 +510,64 @@
 
 <!-- 🇮🇳 INDEPENDENCE DAY THEME - 15 AUGUST 🇮🇳 -->
 <style>
-/* Independence Day Overlay */
-#independence-day-theme {
+/* Independence Day — decorative layer sits BEHIND all readable content.
+   Fixes: tricolour wash and particles used to paint on TOP of every
+   section (including the dark verdict box), washing out the text.
+   Now z-index is negative so cards/headings always keep full contrast. */
+
+#independence-backdrop{
     display: none;
     position: fixed;
     inset: 0;
-    z-index: 99999;
+    z-index: -1;           /* sits behind all page content */
     pointer-events: none;
     overflow: hidden;
 }
 
-/* Tricolour background glow */
-#independence-day-theme::before {
+/* Soft tricolour wash — only visible in the gaps between cards */
+#independence-backdrop::before {
     content: "";
     position: absolute;
     inset: 0;
     background:
         linear-gradient(
             to bottom,
-            rgba(255, 153, 51, 0.16) 0%,
-            rgba(255, 153, 51, 0.16) 33%,
-            rgba(255, 255, 255, 0.08) 33%,
-            rgba(255, 255, 255, 0.08) 66%,
-            rgba(19, 136, 8, 0.16) 66%,
-            rgba(19, 136, 8, 0.16) 100%
+            rgba(255, 153, 51, 0.08) 0%,
+            rgba(255, 153, 51, 0.08) 33%,
+            rgba(255, 255, 255, 0.04) 33%,
+            rgba(255, 255, 255, 0.04) 66%,
+            rgba(19, 136, 8, 0.08) 66%,
+            rgba(19, 136, 8, 0.08) 100%
         );
-    animation: tricolourGlow 5s ease-in-out infinite alternate;
+    animation: tricolourGlow 6s ease-in-out infinite alternate;
 }
 
 @keyframes tricolourGlow {
-    from { opacity: 0.65; }
-    to { opacity: 1; }
+    from { opacity: 0.5; }
+    to { opacity: 0.8; }
 }
 
-/* Top Independence Day banner */
-.independence-banner {
+/* Top Independence Day banner — stays above content, but content is
+   pushed down (see .hero padding-top) so nothing sits underneath it */
+.independence-banner-wrap{
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
+    z-index: 100000;
+    pointer-events: none;
+    display: none;
+}
+.independence-banner {
     padding: 14px 20px;
     text-align: center;
-    z-index: 100000;
     background: linear-gradient(
         to bottom,
-        rgba(255, 153, 51, 0.96) 0%,
-        rgba(255, 255, 255, 0.96) 50%,
-        rgba(19, 136, 8, 0.96) 100%
+        rgba(255, 153, 51, 0.97) 0%,
+        rgba(255, 255, 255, 0.97) 50%,
+        rgba(19, 136, 8, 0.97) 100%
     );
     box-shadow: 0 4px 20px rgba(0,0,0,0.25);
-    pointer-events: none;
 }
 
 .independence-title {
@@ -599,51 +607,37 @@
     to { transform: rotate(360deg); }
 }
 
-/* Floating patriotic particles */
+/* Floating patriotic particles — kept behind content (see #independence-backdrop) */
 .tricolour-particle {
-    position: fixed;
-    width: 8px;
-    height: 8px;
+    position: absolute;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    opacity: 0.65;
+    opacity: 0.5;
     animation: floatParticle 8s linear infinite;
 }
 
 @keyframes floatParticle {
     0% { transform: translateY(110vh) scale(0.5); opacity: 0; }
-    20% { opacity: 0.7; }
-    80% { opacity: 0.7; }
+    20% { opacity: 0.5; }
+    80% { opacity: 0.5; }
     100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
 }
 
-/* Make blog content slightly patriotic */
-body.independence-active {
-    background:
-        linear-gradient(
-            180deg,
-            rgba(255,153,51,0.10) 0%,
-            rgba(255,255,255,0.08) 50%,
-            rgba(19,136,8,0.10) 100%
-        ) !important;
-}
-
-/* Optional patriotic border */
-body.independence-active::after {
-    content: "";
+/* Thin patriotic edge — a slim 4px bar, not a solid block, so it never
+   covers footer text even on short pages */
+#independence-edge{
     position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 6px;
+    left: 0; right: 0; bottom: 0;
+    height: 4px;
     z-index: 100001;
+    pointer-events: none;
+    display: none;
     background: linear-gradient(
         to right,
-        #ff9933 0%,
-        #ff9933 33.33%,
-        #ffffff 33.33%,
-        #ffffff 66.66%,
-        #138808 66.66%,
-        #138808 100%
+        #ff9933 0%, #ff9933 33.33%,
+        #ffffff 33.33%, #ffffff 66.66%,
+        #138808 66.66%, #138808 100%
     );
 }
 
@@ -656,7 +650,9 @@ body.independence-active .hero{
 }
 </style>
 
-<div id="independence-day-theme">
+<div id="independence-backdrop"></div>
+
+<div class="independence-banner-wrap" id="independenceBannerWrap">
     <div class="independence-banner">
         <div class="independence-title">
             <span class="ashoka-chakra">☸</span>
@@ -668,6 +664,8 @@ body.independence-active .hero{
     </div>
 </div>
 
+<div id="independence-edge"></div>
+
 <script>
 (function () {
     const today = new Date();
@@ -677,19 +675,23 @@ body.independence-active .hero{
     // Activate only on 15 August
     if (month === 7 && date === 15) {
         document.body.classList.add("independence-active");
-        const theme = document.getElementById("independence-day-theme");
-        theme.style.display = "block";
 
-        // Create floating tricolour particles
+        const backdrop = document.getElementById("independence-backdrop");
+        backdrop.style.display = "block";
+
+        document.getElementById("independenceBannerWrap").style.display = "block";
+        document.getElementById("independence-edge").style.display = "block";
+
+        // Create floating tricolour particles inside the backdrop (behind content)
         const colours = ["#ff9933", "#ffffff", "#138808"];
-        for (let i = 0; i < 35; i++) {
+        for (let i = 0; i < 24; i++) {
             const particle = document.createElement("div");
             particle.className = "tricolour-particle";
             particle.style.background = colours[i % colours.length];
             particle.style.left = Math.random() * 100 + "%";
             particle.style.animationDelay = Math.random() * 8 + "s";
             particle.style.animationDuration = (5 + Math.random() * 7) + "s";
-            theme.appendChild(particle);
+            backdrop.appendChild(particle);
         }
     }
 })();

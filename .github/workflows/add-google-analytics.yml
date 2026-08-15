@@ -1,0 +1,48 @@
+name: Add Google Analytics
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  add-ga4:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Add GA4 tracking to HTML pages
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          GA = '''\n    <!-- Google Analytics 4 -->\n    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZKPR1F26NQ"></script>\n    <script>\n      window.dataLayer = window.dataLayer || [];\n      function gtag(){dataLayer.push(arguments);}\n      gtag('js', new Date());\n      gtag('config', 'G-ZKPR1F26NQ');\n    </script>\n'''
+
+          changed = 0
+          for p in Path('.').rglob('*.html'):
+              if '.git' in p.parts or p.name.startswith('google'):
+                  continue
+              text = p.read_text(encoding='utf-8')
+              if 'G-ZKPR1F26NQ' in text:
+                  continue
+              if '</head>' not in text:
+                  continue
+              p.write_text(text.replace('</head>', GA + '</head>', 1), encoding='utf-8')
+              changed += 1
+          print(f'Updated {changed} HTML files.')
+          PY
+
+      - name: Commit GA4 changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add '*.html' '**/*.html'
+          if git diff --cached --quiet; then
+            echo "No HTML files needed Google Analytics changes."
+            exit 0
+          fi
+          git commit -m "Add Google Analytics tracking"
+          git push
